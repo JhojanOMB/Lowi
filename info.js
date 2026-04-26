@@ -696,7 +696,7 @@ menu.innerHTML = `
           <i class="fa-solid fa-chevron-down" style="float:right;"></i>
         </div>
         <div class="subcontenidoGrupo">
-          <button data-opt="bandas.separadas" class="btnMenu">Separa Bandas 2.4/5G</button>
+          <button data-opt="bandas.separar" class="btnMenu">Separa Bandas 2.4/5G</button>
         </div>
 
         <div class="subtituloGrupo">
@@ -845,7 +845,7 @@ menu.querySelectorAll(".tituloGrupo").forEach(t => {
       t.classList.add("abierto");
     }
   });
-});
+}); 
 
 // =========================
 // BOTONES → COPIAR

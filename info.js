@@ -410,7 +410,7 @@ const textosBandas = {
     "• Solución: Se envía contrata es voxont no hay acceso remoto"
 };
 
-const plantillaBandas = estado => baseBandas() + textosWifi[estado];
+const plantillaBandas = estado => baseBandas() + textosBandas[estado];
 
 // =========================
 // WIFI CONTRASEÑA

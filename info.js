@@ -400,7 +400,7 @@ const baseBandas = () =>
   "• Qué dice el cliente que le sucede: Necesito separar la red wifi\n";
 
 const textosBandas = {
-  resuelto:
+  separar:
     "• Pruebas realizadas: Se valida en schaman bandas unificadas se separan y se configura nombre\n" +
     "• Diagnóstico: Desea separar bandas para uso personal\n" +
     "• Solución: Se separan bandas y se comprueba conexión correcta",

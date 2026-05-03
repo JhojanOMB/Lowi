@@ -531,12 +531,12 @@ const base101 = () =>
 
 const textos101 = {
   informacion:
-    "• Pruebas realizadas: se valido en logistica esta reparto aún el deco no han pasado 48 horas\n" +
-    "• Diagnóstico: no se activado el deco porque logistica no ha notificado aún\n" +
+    "• Pruebas realizadas: Se valido en logistica esta reparto aún el deco no han pasado 48 horas\n" +
+    "• Diagnóstico: No se activado el deco porque logistica no ha notificado aún\n" +
     "• Solución: Se indica al cliente que espere a que logistica indique que ya se entrego el deco y notifique la entrega para que se active el servicio automaticamente",
   nv2:
-    "• Pruebas realizadas: se verifico estado en logistica esta entregado y ya pasaron 48 horas, se revisa la mac y no es la misma \n" +
-    "• Diagnóstico: mac diferente\n" +
+    "• Pruebas realizadas: Se verifico estado en logistica esta entregado y ya pasaron 48 horas, se revisa la mac y no es la misma \n" +
+    "• Diagnóstico: Mac diferente\n" +
     "• Solución: Se escala a NV2 para revision de error 101"
 };
 
@@ -551,14 +551,14 @@ const baseTecnicoIncumplido = () => encabezado();
 const textosTecnicoIncumplido = {
   esperaCita:
     "• Qué dice el cliente que le sucede: Tengo cita con el técnico\n" +
-    "• Pruebas realizadas: Se valida cita programada en sistema, se verifica fecha y hora de cita\n" +
+    "• Pruebas realizadas: Se valida cita programada en Smart, se verifica fecha y hora de cita se le informa que no hha pasado el tiempo de espera\n" +
     "• Diagnóstico: Cita aún en tiempo de espera\n" +
     "• Solución: Se informa al cliente que debe esperar dentro de la franja horaria indicada y se le pide paciencia",
   incumplimiento:
     "• Qué dice el cliente que le sucede: El técnico no vino a la cita\n" +
-    "• Pruebas realizadas: Se verifica en sistema que la cita ya pasó y se valida que el técnico no presentó la visita\n" +
+    "• Pruebas realizadas: Se verifica en Smart que la cita ya pasó y se valida que el técnico no presentó la visita\n" +
     "• Diagnóstico: Incumplimiento de visita técnica\n" +
-    "• Solución: Se disculpa con el cliente y se reprograma nueva cita o se envía contrata con técnico"
+    "• Solución: Se disculpa con el cliente y se reporta técnico en base black list"
 };
 
 const plantillaTecnicoIncumplido = estado =>

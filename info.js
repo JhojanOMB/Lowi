@@ -376,13 +376,13 @@ const baseLentitud = () =>
 
 const textosLentitud = {
   resuelto:
-    "• Pruebas realizadas: Reinicio, separación de bandas, test correcto\n" +
+    "• Pruebas realizadas: Reinicio de fábrica, separación de bandas, test de velocidad correcto\n" +
     "• Diagnóstico: Saturación del router\n" +
-    "• Solución: Se deja resuelto",
+    "• Solución: Se realizo reinicio de fábrica, se separan bandas y se comprueba con cliente que el internet ya no va lento",
   tecnico:
-    "• Pruebas realizadas: Reinicio sin mejora, test bajo\n" +
+    "• Pruebas realizadas: Reinicio de fábrica sin mejora, test bajo\n" +
     "• Diagnóstico: Posible daño en cpe o nodo\n" +
-    "• Solución: Se envía contrata",
+    "• Solución: Se envía contrata para revisión y posible cambio de cpe",
   nv2:
     "• Pruebas realizadas: Test persistente bajo\n" +
     "• Diagnóstico: Posible fallo en red\n" +
@@ -424,7 +424,7 @@ const textosWifi = {
   resuelto:
     "• Pruebas realizadas: Se accede al router, se modifica clave\n" +
     "• Diagnóstico: Requería cambio de clave\n" +
-    "• Solución: Se deja resuelto",
+    "• Solución: Se cambio la contraseña y se comprueba conexión correcta con nueva clave",
   no:
     "• Pruebas realizadas: No se pudo acceder al router\n" +
     "• Diagnóstico: Cpe no responde\n" +
@@ -521,7 +521,44 @@ const plantillaMando = estado => baseMando() + textosMando[estado];
 // ERROR 101
 // =========================
 
-const plantilla101 = estado => baseMando() + textosMando[estado];
+const base101 = () =>
+  encabezado() +
+  "• Qué dice el cliente que le sucede: Me sale error 101\n";
+
+const textos101 = {
+  informacion:
+    "• Pruebas realizadas: se valido en logistica esta reparto aún el deco no han pasado 48 horas\n" +
+    "• Diagnóstico: no se activado el deco porque logistica no ha notificado aún\n" +
+    "• Solución: Se indica al cliente que espere a que logistica indique que ya se entrego el deco y notifique la entrega para que se active el servicio automaticamente",
+  nv2:
+    "• Pruebas realizadas: se verifico estado en logistica esta entregado y ya pasaron 48 horas, se revisa la mac y no es la misma \n" +
+    "• Diagnóstico: mac diferente\n" +
+    "• Solución: Se escala a NV2 para revision de error 101"
+};
+
+const plantilla101 = estado => base101() + textos101[estado];
+
+// =========================
+// TÉCNICO INCUMPLIDO
+// =========================
+
+const baseTecnicoIncumplido = () => encabezado();
+
+const textosTecnicoIncumplido = {
+  esperaCita:
+    "• Qué dice el cliente que le sucede: Tengo cita con el técnico\n" +
+    "• Pruebas realizadas: Se valida cita programada en sistema, se verifica fecha y hora de cita\n" +
+    "• Diagnóstico: Cita aún en tiempo de espera\n" +
+    "• Solución: Se informa al cliente que debe esperar dentro de la franja horaria indicada y se le pide paciencia",
+  incumplimiento:
+    "• Qué dice el cliente que le sucede: El técnico no vino a la cita\n" +
+    "• Pruebas realizadas: Se verifica en sistema que la cita ya pasó y se valida que el técnico no presentó la visita\n" +
+    "• Diagnóstico: Incumplimiento de visita técnica\n" +
+    "• Solución: Se disculpa con el cliente y se reprograma nueva cita o se envía contrata con técnico"
+};
+
+const plantillaTecnicoIncumplido = estado =>
+  baseTecnicoIncumplido() + textosTecnicoIncumplido[estado];
 
 // =========================
 // OBJETO DE PLANTILLAS
@@ -568,7 +605,12 @@ const plantillas = {
     no: () => plantillaIncomIP("no")
   },
   error101: {
-    unico: () => plantilla101()
+    informacion: () => plantilla101("informacion"),
+    nv2: () => plantilla101("nv2")
+  },
+  tecnicoIncumplido: {
+    esperaCita: () => plantillaTecnicoIncumplido("esperaCita"),
+    incumplimiento: () => plantillaTecnicoIncumplido("incumplimiento")
   }
 };
 
@@ -707,6 +749,15 @@ menu.innerHTML = `
           <button data-opt="incomIP.resuelto" class="btnMenu">Resuelto</button>
           <button data-opt="incomIP.no" class="btnMenu">Envio de Técnico</button>
         </div>
+
+        <div class="subtituloGrupo">
+          Técnico Incumplido
+          <i class="fa-solid fa-chevron-down" style="float:right;"></i>
+        </div>
+        <div class="subcontenidoGrupo">
+          <button data-opt="tecnicoIncumplido.esperaCita" class="btnMenu">Aun en tiempo de cita</button>
+          <button data-opt="tecnicoIncumplido.incumplimiento" class="btnMenu">Técnico incumplió</button>
+        </div>
       </div>
     </div>
 
@@ -731,7 +782,8 @@ menu.innerHTML = `
           <i class="fa-solid fa-chevron-down" style="float:right;"></i>
         </div>
         <div class="subcontenidoGrupo">
-          <button data-opt="error101.unico" class="btnMenu">Esperar activación</button>
+          <button data-opt="error101.informacion" class="btnMenu">Esperar activación</button>
+          <button data-opt="error101.nv2" class="btnMenu">Escalar a NV2</button>
         </div>
       </div>
     </div>

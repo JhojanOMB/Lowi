@@ -39,7 +39,7 @@ const extraerTexto = etiquetas => {
 // DEFINIR ETIQUETAS
 // =========================
 
-const eD = ["DNI:", "NIE:"];
+const eD = ["DNI:", "NIE:", "PASSPORT:", "Passport:"];
 const eID = ["AMDOCS ID:", "ID Cliente:"];
 const eM = ["Tlf. contacto:", "Movil:"];
 const eDir = ["Dirección de instalación:", "Direccion:", "Dirección facturación:"];
@@ -49,6 +49,8 @@ const eFin = [
   "Movil:",
   "Tlf. contacto:",
   "DNI:",
+  "PASSPORT:",
+  "Passport:",
   "ID Cliente:",
   "Fecha creación:",
   "Segmento:",
@@ -167,6 +169,8 @@ const tipoDoc = /^\d{8}[A-Z]$/.test(dni)
   ? "DNI"
   : /^[XYZ]\d{7}[A-Z]$/.test(dni)
   ? "NIE"
+  : dni !== "[No encontrado]"
+  ? "Passport"
   : "Documento";
 const dniFmt = `${tipoDoc}: ${dni}`;
 

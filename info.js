@@ -337,31 +337,31 @@ const baseCortes = () =>
 const textosCortes = {
   HFC: {
     resuelto:
-      "• Pruebas realizadas: Reinicio de fábrica, ajuste de cableado, señal estable\n" +
-      "• Diagnóstico: Saturación temporal\n" +
+      "• Pruebas realizadas: Se revisa en thot hay cortes en los últimos 7 días se hace reinicio de fábrica, ajuste de cableado y separación de bandas, conexión a red de internet ya es estable no hay cortes\n" +
+      "• Diagnóstico: Saturación temporal del cpe\n" +
       "• Solución: Se hace reinicio de fabrica, se dividen bandas y se comprueba con cliente que el internet ya no tiene cortes",
     tecnico:
-      "• Pruebas realizadas: Se valido en Thot bastantes cortes, reinicio de fábrica\n" +
-      "• Diagnóstico: Señal degradada\n" +
-      "• Solución: Se envía contrata",
+      "• Pruebas realizadas: Se valido en Thot bastantes cortes, reinicio de fábrica sin mejora tras prueba de conexión\n" +
+      "• Diagnóstico: Señal degradada tras saturación del cpe\n" +
+      "• Solución: Se envía contrata para revisión y posible cambio de cpe",
     nv2:
       "• Pruebas realizadas: Se valido en Thot cortes de poco tiempo persistentes, se aplico reinicio de fábrica, y se deja para validación de nivel 2\n" +
       "• Diagnóstico: Posible fallo en red o saturación de cpe\n" +
-      "• Solución: Se escala a NV2"
+      "• Solución: Se escala a NV2 para revisión de red"
   },
   FTTH: {
     resuelto:
-      "• Pruebas realizadas: Reinicio de fábrica, ajuste de cableado, señal estable\n" +
-      "• Diagnóstico: Saturación temporal\n" +
+      "• Pruebas realizadas: Se reviso en Schaman hay cortes, reinicio de fábrica, ajuste de cableado, señal estable en ambas bandas wifi\n" +
+      "• Diagnóstico: Saturación temporal del cpe\n" +
       "• Solución: Se hace reinicio de fabrica, se dividen bandas y se comprueba con cliente que el internet ya no tiene cortes",
     tecnico:
-      "• Pruebas realizadas: Cortes en Schaman, reinicio sin mejora\n" +
+      "• Pruebas realizadas: Cortes en Schaman, reinicio de fábrica sin mejora\n" +
       "• Diagnóstico: Posible daño en cpe\n" +
-      "• Solución: Se envía contrata",
+      "• Solución: Se envía contrata para revisión y posible cambio de cpe",
     nv2:
-      "• Pruebas realizadas: Cortes persistentes\n" +
+      "• Pruebas realizadas: Cortes persistentes validados en Schaman, se hace pruebas con videos y en red pero sigue ocurriendo y sin mejora\n" +
       "• Diagnóstico: Posible fallo en red\n" +
-      "• Solución: Se escala a NV2"
+      "• Solución: Se escala a NV2 para revisión de red"
   }
 };
 
@@ -405,7 +405,7 @@ const baseBandas = () =>
 
 const textosBandas = {
   separar:
-    "• Pruebas realizadas: Se valida en schaman bandas unificadas se separan y se configura nombre\n" +
+    "• Pruebas realizadas: Se valida en Schaman bandas unificadas se separan y se configura nombre\n" +
     "• Diagnóstico: Desea separar bandas para uso personal\n" +
     "• Solución: Se separan bandas y se comprueba conexión correcta",
   no:
@@ -467,18 +467,32 @@ const baseFuera = () =>
   "• Qué dice el cliente que le sucede: El internet va y viene o va muy lento\n";
 
 const textosFuera = {
-  resuelto:
-    "• Pruebas realizadas: reinicio, separación de bandas, test correcto\n" +
-    "• Diagnóstico: saturación del router\n" +
-    "• Solución: Se deja resuelto",
-  no:
-    "• Pruebas realizadas: fuera de umbrales en Schaman\n" +
-    "• Diagnóstico: posible daño en nodo o cpe\n" +
-    "• Solución: Se envía contrata"
+  HFC: {
+    resuelto:
+      "• Pruebas realizadas: Se valida en THOT parámetros fuera de umbrales, se reinicia de fábrica, se reinician parámetros SNMP, flaps y QoS, separación de bandas, test correcto\n" +
+      "• Diagnóstico: Saturación del router o parámetros degradados\n" +
+      "• Solución: Se reincia de fabrica, se reinician parámetros SNMP, se dividen bandas y se comprueba con cliente que el internet ya no tiene cortes ni lentitud ni parametros fuera de umbral",
+    no:
+      "• Pruebas realizadas: Fuera de umbrales en THOT, reinicio de fábrica y reinicio de parámetros sin mejora\n" +
+      "• Diagnóstico: posible daño en nodo o cpe\n" +
+      "• Solución: Se envía contrata para revisión y posible cambio de cpe o revisión de nodo"
+  },
+  FTTH: {
+    resuelto:
+      "• Pruebas realizadas: Se revisa en Schaman parámetros fuera de umbrales, se hace reinicio de fábrica, separación de bandas, test correcto\n" +
+      "• Diagnóstico: Saturación del router\n" +
+      "• Solución: Se deja resuelto",
+    no:
+      "• Pruebas realizadas: Fuera de umbrales en Schaman\n" +
+      "• Diagnóstico: posible daño en nodo o cpe\n" +
+      "• Solución: Se envía contrata para revisión y posible cambio de cpe o revisión de nodo"
+  }
 };
 
-const plantillaFueraUmbrales = estado =>
-  baseFuera() + textosFuera[estado];
+const plantillaFueraUmbrales = estado => {
+  const tech = detectarTecnologia().includes("HFC") ? "HFC" : "FTTH";
+  return baseFuera() + textosFuera[tech][estado];
+};
 
 // =========================
 // INCOMUNICADO POR IP
@@ -489,7 +503,7 @@ const baseIncomIP = () =>
 
 const textosIncomIP = {
   resuelto:
-    "• Pruebas realizadas: ajuste de cableado, reinicio manual, apertura de bandas; levanta servicio\n" +
+    "• Pruebas realizadas: Ajuste de cableado, reinicio manual de fábrica, apertura de bandas, levanta servicio con ip correctamente\n" +
     "• Diagnóstico: cpe saturado\n" +
     "• Solución: Se deja resuelto",
   no:
@@ -551,7 +565,7 @@ const baseTecnicoIncumplido = () => encabezado();
 const textosTecnicoIncumplido = {
   esperaCita:
     "• Qué dice el cliente que le sucede: Tengo cita con el técnico\n" +
-    "• Pruebas realizadas: Se valida cita programada en Smart, se verifica fecha y hora de cita se le informa que no hha pasado el tiempo de espera\n" +
+    "• Pruebas realizadas: Se valida cita programada en Smart, se verifica fecha y hora de cita se le informa que no ha pasado el tiempo de espera\n" +
     "• Diagnóstico: Cita aún en tiempo de espera\n" +
     "• Solución: Se informa al cliente que debe esperar dentro de la franja horaria indicada y se le pide paciencia",
   incumplimiento:

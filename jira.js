@@ -195,6 +195,7 @@ javascript:(() => {
         "DESPERFECTO INTERNO",
         "DESPERFECTO EXTERNO"
       ];
+      
       const sel = await menuAverias(averias);
       if (!sel) return;
       document.getElementById("summary").value = sel;
@@ -203,6 +204,7 @@ javascript:(() => {
       loaderText("<i class='fa-solid fa-flag'></i> Prioridad");
       loader(15);
       await selectRS(document.querySelector("#react-select-customfield_16817-instance-input"), 0);
+
       /* GRUPO / TIPO */
       const esMasiva = sel.includes("MASIVA");
       if (!esMasiva) {
@@ -213,6 +215,7 @@ javascript:(() => {
         loader(55);
         await selectRS(document.querySelector("#insight-atlas-select-16801 input"), 0);
       }
+
       /* SUBTIPO */
       let sub = 0;
       if (sel.includes("INCOMUNICADO") || sel.includes("NO LEVANTA")) sub = 1;
@@ -223,7 +226,8 @@ javascript:(() => {
         loader(70);
         await selectRS(document.querySelector("#insight-atlas-select-16802 input"), sub);
       }
-      /* CD1 */
+
+      /* CD1 N/A*/
       loaderText("<i class='fa-solid fa-plug-circle-check'></i> CD1");
       loader(85);
       await selectRS(document.querySelector('#cd-1 input[id^="react-select"]'), 5);

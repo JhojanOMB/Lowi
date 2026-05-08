@@ -195,7 +195,7 @@ javascript:(() => {
         "DESPERFECTO INTERNO",
         "DESPERFECTO EXTERNO"
       ];
-      
+    
       const sel = await menuAverias(averias);
       if (!sel) return;
       document.getElementById("summary").value = sel;
@@ -236,8 +236,12 @@ javascript:(() => {
       loader(95);
       const now = new Date();
       xp('//*[@id="customfield_16825"]').value = fmt(now);
-      xp('//*[@id="customfield_16823"]').value = fmt(nextLab(new Date(now)));
-      xp('//*[@id="customfield_16824"]').value = fmt(nextLab(new Date(now)));
+      const startDate = nextLab(new Date(now));
+      startDate.setHours(8, 0, 0, 0);
+      xp('//*[@id="customfield_16823"]').value = fmt(startDate);
+      const endDate = new Date(startDate);
+      endDate.setHours(16, 0, 0, 0);
+      xp('//*[@id="customfield_16824"]').value = fmt(endDate);
       xp('//*[@id="customfield_16833"]').value = "OK";
       /* TELÉFONOS */
       const tp = document.getElementById("customfield_16820");

@@ -209,22 +209,28 @@ const mostrarToast = msg => {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #7b2cbf;
+    background: linear-gradient(135deg, #6d28d9, #9d4edd);
     color: white;
-    padding: 12px 18px;
-    border-radius: 8px;
-    font-family: Arial;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
     z-index: 999999999;
     opacity: 0;
-    transition: opacity .3s;
+    transform: translateY(12px);
+    transition: opacity .3s ease, transform .3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   `;
-  t.textContent = msg;
+  t.innerHTML = `<strong style="display:block; margin-bottom:4px;">Copiado</strong><span style="font-size:12px;">${msg}</span>`;
   document.body.appendChild(t);
-  setTimeout(() => (t.style.opacity = "1"), 10);
+  setTimeout(() => {
+    t.style.opacity = "1";
+    t.style.transform = "translateY(0)";
+  }, 10);
   setTimeout(() => {
     t.style.opacity = "0";
+    t.style.transform = "translateY(-10px)";
     setTimeout(() => t.remove(), 300);
-  }, 2000);
+  }, 2200);
 };
 
 // =========================
@@ -663,6 +669,10 @@ const plantillas = {
 // MENÚ COMPLETO
 // =========================
 
+if (document.getElementById("menuCopi")) {
+  return;
+}
+
 const menu = document.createElement("div");
 menu.innerHTML = `
   <div id="menuCopi" style="
@@ -967,7 +977,9 @@ menu.querySelectorAll(".btnMenu").forEach(btn => {
       let texto = fn();
       if (texto instanceof Promise) texto = await texto;
       copiar(texto);
-      mostrarToast("Copiado correctamente");
+      const nombrePlantilla = btn.textContent.trim() || option;
+      mostrarToast(`Plantilla copiada: ${nombrePlantilla}`);
+      menu.remove();
     } else {
       mostrarToast("Error: plantilla no encontrada");
     }

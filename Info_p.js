@@ -1,3 +1,4 @@
+(() => {
 // =========================
 // CARGAR ICONOS
 // =========================
@@ -684,7 +685,7 @@ menu.innerHTML = `
     border-radius: 16px !important;
     box-shadow: 0 0 28px rgba(128,0,255,0.35) !important;
     z-index: 999999 !important;
-    width: min(350px, 70vw) !important;
+    width: min(320px, 65vw) !important;
     max-height: 85vh !important;
     overflow-y: auto !important;
     font-family: Arial !important;
@@ -993,3 +994,4 @@ menu.querySelectorAll(".btnMenu").forEach(btn => {
 menu.querySelector("#cerrarMenu").addEventListener("click", () => {
   menu.remove();
 });
+})();

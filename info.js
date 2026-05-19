@@ -1,4 +1,5 @@
-﻿// =========================
+﻿(() => {
+// =========================
 // CARGAR ICONOS
 // =========================
 
@@ -209,22 +210,28 @@ const mostrarToast = msg => {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #7b2cbf;
+    background: linear-gradient(135deg, #6d28d9, #9d4edd);
     color: white;
-    padding: 12px 18px;
-    border-radius: 8px;
-    font-family: Arial;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
     z-index: 999999999;
     opacity: 0;
-    transition: opacity .3s;
+    transform: translateY(12px);
+    transition: opacity .3s ease, transform .3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   `;
-  t.textContent = msg;
+  t.innerHTML = `<strong style="display:block; margin-bottom:4px;">Copiado</strong><span style="font-size:12px;">${msg}</span>`;
   document.body.appendChild(t);
-  setTimeout(() => (t.style.opacity = "1"), 10);
+  setTimeout(() => {
+    t.style.opacity = "1";
+    t.style.transform = "translateY(0)";
+  }, 10);
   setTimeout(() => {
     t.style.opacity = "0";
+    t.style.transform = "translateY(-10px)";
     setTimeout(() => t.remove(), 300);
-  }, 2000);
+  }, 2200);
 };
 
 // =========================
@@ -301,7 +308,7 @@ const textosIncomunicado = {
   },
   FTTH_ONT: {
     pruebas:
-      "• Pruebas realizadas: ONT en rojo en alarm, sin acceso remoto, se valida el cableado no presenta daños y no hay acceso a cpe\n",
+      "• Pruebas realizadas: ONT en rojo en alarma, sin acceso remoto, se valida el cableado no presenta daños y no hay acceso a CPE\n",
     diag: "• Diagnóstico: posible daño en tramo óptico\n",
     sol: "• Solución: se envía contrata para arreglo de acometida"
   },
@@ -337,27 +344,27 @@ const baseCortes = () =>
 const textosCortes = {
   HFC: {
     resuelto:
-      "• Pruebas realizadas: Se revisa en thot hay cortes en los últimos 7 días se hace reinicio de fábrica, ajuste de cableado y separación de bandas, conexión a red de internet ya es estable no hay cortes\n" +
-      "• Diagnóstico: Saturación temporal del cpe\n" +
-      "• Solución: Se hace reinicio de fabrica, se dividen bandas y se comprueba con cliente que el internet ya no tiene cortes",
+      "• Pruebas realizadas: Se revisa en THOT que hay cortes en los últimos 7 días, se hace reinicio de fábrica, ajuste de cableado y separación de bandas, y la conexión a internet queda estable sin cortes\n" +
+      "• Diagnóstico: Saturación temporal del CPE\n" +
+      "• Solución: Se hace reinicio de fábrica, se dividen bandas y se comprueba con el cliente que el internet ya no tiene cortes",
     tecnico:
-      "• Pruebas realizadas: Se valido en Thot bastantes cortes, reinicio de fábrica sin mejora tras prueba de conexión\n" +
-      "• Diagnóstico: Señal degradada tras saturación del cpe\n" +
-      "• Solución: Se envía contrata para revisión y posible cambio de cpe",
+      "• Pruebas realizadas: Se valida en THOT bastantes cortes, reinicio de fábrica sin mejora tras prueba de conexión\n" +
+      "• Diagnóstico: Señal degradada tras saturación del CPE\n" +
+      "• Solución: Se envía contrata para revisión y posible cambio de CPE",
     nv2:
-      "• Pruebas realizadas: Se valido en Thot cortes de poco tiempo persistentes, se aplico reinicio de fábrica, y se deja para validación de nivel 2\n" +
-      "• Diagnóstico: Posible fallo en red o saturación de cpe\n" +
+      "• Pruebas realizadas: Se valida en THOT cortes de poco tiempo persistentes, se aplicó reinicio de fábrica y se deja para validación de nivel 2\n" +
+      "• Diagnóstico: Posible fallo en red o saturación del CPE\n" +
       "• Solución: Se escala a NV2 para revisión de red"
   },
   FTTH: {
     resuelto:
-      "• Pruebas realizadas: Se reviso en Schaman hay cortes, reinicio de fábrica, ajuste de cableado, señal estable en ambas bandas wifi\n" +
-      "• Diagnóstico: Saturación temporal del cpe\n" +
-      "• Solución: Se hace reinicio de fabrica, se dividen bandas y se comprueba con cliente que el internet ya no tiene cortes",
+      "• Pruebas realizadas: Se revisó en Schaman que hay cortes, se reinicia de fábrica, se ajusta cableado y la señal queda estable en ambas bandas WiFi\n" +
+      "• Diagnóstico: Saturación temporal del CPE\n" +
+      "• Solución: Se hace reinicio de fábrica, se dividen bandas y se comprueba con el cliente que el internet ya no tiene cortes",
     tecnico:
       "• Pruebas realizadas: Cortes en Schaman, reinicio de fábrica sin mejora\n" +
-      "• Diagnóstico: Posible daño en cpe\n" +
-      "• Solución: Se envía contrata para revisión y posible cambio de cpe",
+      "• Diagnóstico: Posible daño en CPE\n" +
+      "• Solución: Se envía contrata para revisión y posible cambio de CPE",
     nv2:
       "• Pruebas realizadas: Cortes persistentes validados en Schaman, se hace pruebas con videos y en red pero sigue ocurriendo y sin mejora\n" +
       "• Diagnóstico: Posible fallo en red\n" +
@@ -382,15 +389,15 @@ const textosLentitud = {
   resuelto:
     "• Pruebas realizadas: Reinicio de fábrica, separación de bandas, test de velocidad correcto\n" +
     "• Diagnóstico: Saturación del router\n" +
-    "• Solución: Se realizo reinicio de fábrica, se separan bandas y se comprueba con cliente que el internet ya no va lento",
+    "• Solución: Se realizó reinicio de fábrica, se separan bandas y se comprueba con el cliente que el internet ya no va lento",
   tecnico:
-    "• Pruebas realizadas: Reinicio de fábrica sin mejora, test bajo\n" +
-    "• Diagnóstico: Posible daño en cpe o nodo\n" +
-    "• Solución: Se envía contrata para revisión y posible cambio de cpe",
+    "• Pruebas realizadas: Reinicio de fábrica sin mejora, test bajo en 5G\n" +
+    "• Diagnóstico: Posible daño en CPE o nodo\n" +
+    "• Solución: Se envía contrata para revisión y posible cambio de CPE",
   nv2:
-    "• Pruebas realizadas: Test persistente bajo\n" +
-    "• Diagnóstico: Posible fallo en red\n" +
-    "• Solución: Se escala a NV2"
+    "• Pruebas realizadas: Reset de fábrica si está persistente bajo en banda 5G y en cableado\n" +
+    "• Diagnóstico: Posible fallo de saturación\n" +
+    "• Solución: Se escala a NV2 por lentitud persistente tras reinicio de fábrica para revisión de red"
 };
 
 const plantillaLentitud = estado => baseLentitud() + textosLentitud[estado];
@@ -410,8 +417,8 @@ const textosBandas = {
     "• Solución: Se separan bandas y se comprueba conexión correcta",
   no:
     "• Pruebas realizadas: No se pudo acceder al router\n" +
-    "• Diagnóstico: Cpe no responde\n" +
-    "• Solución: Se envía contrata es voxont no hay acceso remoto"
+    "• Diagnóstico: CPE no responde\n" +
+    "• Solución: Se envía contrata; cpe no hay acceso remoto"
 };
 
 const plantillaBandas = estado => baseBandas() + textosBandas[estado];
@@ -426,13 +433,13 @@ const baseWifi = () =>
 
 const textosWifi = {
   resuelto:
-    "• Pruebas realizadas: Se accede al router, se modifica clave\n" +
+    "• Pruebas realizadas: Se accede al router, se modifica la clave\n" +
     "• Diagnóstico: Requería cambio de clave\n" +
-    "• Solución: Se cambio la contraseña y se comprueba conexión correcta con nueva clave",
+    "• Solución: Se cambió la contraseña y se comprueba conexión correcta con la nueva clave",
   no:
     "• Pruebas realizadas: No se pudo acceder al router\n" +
-    "• Diagnóstico: Cpe no responde\n" +
-    "• Solución: Se envía contrata es voxont no hay acceso remoto"
+    "• Diagnóstico: CPE no responde\n" +
+    "• Solución: Se envía contrata; cpe no hay acceso remoto"
 };
 
 const plantillaWifi = estado => baseWifi() + textosWifi[estado];
@@ -446,14 +453,14 @@ const baseMasiva = () => encabezado();
 const textosMasiva = {
   informacion:
     "• Qué dice el cliente que le sucede: No tengo wifi aún, ¿qué ha pasado con la incidencia?\n" +
-    "• Pruebas realizadas: Se accede a Schaman, sigue averia presente, se valdia en Smart averia masiva en curso, se lee información y se le da al cliente\n" +
+    "• Pruebas realizadas: Se accede a Schaman, sigue avería presente, se valida en Smart que hay una avería masiva en curso, se lee la información y se le da al cliente\n" +
     "• Diagnóstico: Solo quiere saber sobre la masiva\n" +
-    "• Solución: Se revisa averia masiva y se le da la información al cliente de lo que esta ocurriendo y se le pide espere",
+    "• Solución: Se revisa la avería masiva y se le da al cliente información de lo que está ocurriendo, solicitándole que espere",
   ticket:
     "• Qué dice el cliente que le sucede: No tengo wifi\n" +
-    "• Pruebas realizadas: Se accede a Schaman, se valida averia masiva presente, se valdia en Smart averia masiva en curso, se le informa al cliente de tiempos aproxiamdos y bono de datos mientras se resuelve\n" +
+    "• Pruebas realizadas: Se accede a Schaman, se valida que hay una avería masiva presente, se valida en Smart la avería masiva en curso, y se le informa al cliente de tiempos aproximados y de un posible bono de datos mientras se resuelve\n" +
     "• Diagnóstico: Solo quiere saber sobre la masiva\n" +
-    "• Solución: Se revisa averia masiva y se le da la información al cliente de lo que esta ocurriendo y se le pide espere se crea ticket"
+    "• Solución: Se revisa la avería masiva y se le da al cliente información de lo que está ocurriendo, se le pide que espere y se crea ticket"
 };
 
 const plantillaMasiva = estado => baseMasiva() + textosMasiva[estado];
@@ -471,11 +478,11 @@ const textosFuera = {
     resuelto:
       "• Pruebas realizadas: Se valida en THOT parámetros fuera de umbrales, se reinicia de fábrica, se reinician parámetros SNMP, flaps y QoS, separación de bandas, test correcto\n" +
       "• Diagnóstico: Saturación del router o parámetros degradados\n" +
-      "• Solución: Se reincia de fabrica, se reinician parámetros SNMP, se dividen bandas y se comprueba con cliente que el internet ya no tiene cortes ni lentitud ni parametros fuera de umbral",
+      "• Solución: Se reinicia de fábrica, se reinician parámetros SNMP, se dividen bandas y se comprueba con el cliente que el internet ya no tiene cortes ni lentitud ni parámetros fuera de umbral",
     no:
       "• Pruebas realizadas: Fuera de umbrales en THOT, reinicio de fábrica y reinicio de parámetros sin mejora\n" +
-      "• Diagnóstico: posible daño en nodo o cpe\n" +
-      "• Solución: Se envía contrata para revisión y posible cambio de cpe o revisión de nodo"
+      "• Diagnóstico: posible daño en nodo o CPE\n" +
+      "• Solución: Se envía contrata para revisión y posible cambio de CPE o revisión de nodo"
   },
   FTTH: {
     resuelto:
@@ -484,8 +491,8 @@ const textosFuera = {
       "• Solución: Se deja resuelto",
     no:
       "• Pruebas realizadas: Fuera de umbrales en Schaman\n" +
-      "• Diagnóstico: posible daño en nodo o cpe\n" +
-      "• Solución: Se envía contrata para revisión y posible cambio de cpe o revisión de nodo"
+      "• Diagnóstico: posible daño en nodo o CPE\n" +
+      "• Solución: Se envía contrata para revisión y posible cambio de CPE o revisión de nodo"
   }
 };
 
@@ -503,12 +510,12 @@ const baseIncomIP = () =>
 
 const textosIncomIP = {
   resuelto:
-    "• Pruebas realizadas: Ajuste de cableado, reinicio manual de fábrica, apertura de bandas, levanta servicio con ip correctamente\n" +
-    "• Diagnóstico: cpe saturado\n" +
+    "• Pruebas realizadas: Ajuste de cableado, reinicio manual de fábrica, apertura de bandas, y el servicio levanta con IP correctamente\n" +
+    "• Diagnóstico: CPE saturado\n" +
     "• Solución: Se deja resuelto",
   no:
-    "• Pruebas realizadas: cpe incomunicado por IP\n" +
-    "• Diagnóstico: pérdida de IP\n" +
+    "• Pruebas realizadas: CPE incomunicado por ip en schaman, se le hace reinicio de fábrica y sigue sin levantar ip, \n" +
+    "• Diagnóstico: pérdida de ip por posible saturación\n" +
     "• Solución: Se envía contrata"
 };
 
@@ -528,12 +535,35 @@ const textosMando = {
     "• Diagnóstico: desconfiguración\n" +
     "• Solución: Se deja resuelto",
   no:
-    "• Pruebas realizadas: mando sin luces, no empareja\n" +
+    "• Pruebas realizadas: mando sin luces, no empareja al decodificador\n" +
     "• Diagnóstico: mando defectuoso\n" +
     "• Solución: Se escala a NV2 para cambio"
 };
 
 const plantillaMando = estado => baseMando() + textosMando[estado];
+
+// =========================
+// TV
+
+const baseTVCanal = () =>
+  encabezado() +
+  "• Qué dice el cliente que le sucede: No ve algún canal\n";
+
+const plantillaTVCanal = () =>
+  baseTVCanal() +
+  "• Pruebas realizadas: Se verifica señal del deco y se explica al cliente cuál es el canal directamente\n" +
+  "• Diagnóstico: Cliente no localiza el canal\n" +
+  "• Solución: Se le indica el canal directo y se confirma que ya lo ve\n";
+
+const baseTVDeportivos = () =>
+  encabezado() +
+  "• Qué dice el cliente que le sucede: No le salen los canales deportivos\n";
+
+const plantillaTVDeportivos = () =>
+  baseTVDeportivos() +
+  "• Pruebas realizadas: Reinicio de fábrica al deco, se configura desde el inicio con el cliente y se revisa la lista de canales\n" +
+  "• Diagnóstico: El deco necesita reconfiguración completa\n" +
+  "• Solución: Reinicio de fábrica al deco, configuración inicial con el cliente y verificación de canales deportivos\n";
 
 // =========================
 // ERROR 101
@@ -545,13 +575,13 @@ const base101 = () =>
 
 const textos101 = {
   informacion:
-    "• Pruebas realizadas: Se valido en logistica esta reparto aún el deco no han pasado 48 horas\n" +
-    "• Diagnóstico: No se activado el deco porque logistica no ha notificado aún\n" +
-    "• Solución: Se indica al cliente que espere a que logistica indique que ya se entrego el deco y notifique la entrega para que se active el servicio automaticamente",
+    "• Pruebas realizadas: Se valida en logística que está en reparto, aún no han pasado 48 horas desde el deco\n" +
+    "• Diagnóstico: No se ha activado el deco porque logística no ha notificado aún\n" +
+    "• Solución: Se indica al cliente que espere a que logística confirme la entrega del deco y que el servicio se active automáticamente",
   nv2:
-    "• Pruebas realizadas: Se verifico estado en logistica esta entregado y ya pasaron 48 horas, se revisa la mac y no es la misma \n" +
-    "• Diagnóstico: Mac diferente\n" +
-    "• Solución: Se escala a NV2 para revision de error 101"
+    "• Pruebas realizadas: Se verificó el estado en logística, está entregado y ya pasaron 48 horas, se revisa la MAC y no es la misma\n" +
+    "• Diagnóstico: MAC diferente\n" +
+    "• Solución: Se escala a NV2 para revisión de error 101"
 };
 
 const plantilla101 = estado => base101() + textos101[estado];
@@ -565,14 +595,14 @@ const baseTecnicoIncumplido = () => encabezado();
 const textosTecnicoIncumplido = {
   esperaCita:
     "• Qué dice el cliente que le sucede: Tengo cita con el técnico\n" +
-    "• Pruebas realizadas: Se valida cita programada en Smart, se verifica fecha y hora de cita se le informa que no ha pasado el tiempo de espera\n" +
+    "• Pruebas realizadas: Se valida la cita programada en Smart, se verifica la fecha y hora de la cita y se informa al cliente que no ha pasado el tiempo de espera\n" +
     "• Diagnóstico: Cita aún en tiempo de espera\n" +
     "• Solución: Se informa al cliente que debe esperar dentro de la franja horaria indicada y se le pide paciencia",
   incumplimiento:
     "• Qué dice el cliente que le sucede: El técnico no vino a la cita\n" +
     "• Pruebas realizadas: Se verifica en Smart que la cita ya pasó y se valida que el técnico no presentó la visita\n" +
     "• Diagnóstico: Incumplimiento de visita técnica\n" +
-    "• Solución: Se disculpa con el cliente y se reporta técnico en base black list"
+    "• Solución: Se disculpa con el cliente y se reporta al técnico en base black list"
 };
 
 const plantillaTecnicoIncumplido = estado =>
@@ -610,6 +640,10 @@ const plantillas = {
     resuelto: () => plantillaMando("resuelto"),
     no: () => plantillaMando("no")
   },
+  tv: {
+    canal: () => plantillaTVCanal(),
+    deportivos: () => plantillaTVDeportivos()
+  },
   masiva: {
     informacion: () => plantillaMasiva("informacion"),
     ticket: () => plantillaMasiva("ticket")
@@ -636,21 +670,26 @@ const plantillas = {
 // MENÚ COMPLETO
 // =========================
 
+if (document.getElementById("menuCopi")) {
+  return;
+}
+
 const menu = document.createElement("div");
 menu.innerHTML = `
   <div id="menuCopi" style="
     position: fixed !important;
     top: 50% !important;
-    right: 20px !important;
-    transform: translateY(-50%) !important;
-    padding: 14px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 0 20px rgba(128,0,255,0.35) !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 0 28px rgba(128,0,255,0.35) !important;
     z-index: 999999 !important;
-    width: 260px !important;
-    max-height: 75vh !important;
+    width: min(320px, 65vw) !important;
+    max-height: 85vh !important;
     overflow-y: auto !important;
     font-family: Arial !important;
+    font-size: 12px !important;
     text-align: left !important;
     background:#1a0f1f !important;
     color:white !important;
@@ -671,7 +710,7 @@ menu.innerHTML = `
       color:#d9a6ff !important;
       font-weight:600 !important;
       letter-spacing:.5px !important;
-      font-size:17px !important;
+      font-size:15px !important;
       margin-bottom:4px !important;
     ">Generador de Plantillas</h2>
 
@@ -748,7 +787,7 @@ menu.innerHTML = `
         </div>
         <div class="subcontenidoGrupo">
           <button data-opt="fuera.resuelto" class="btnMenu">Resuelto</button>
-          <button data-opt="fuera.no" class="btnMenu">Envio de Técnico</button>
+          <button data-opt="fuera.no" class="btnMenu">Envío de técnico</button>
         </div>
 
         <div class="subtituloGrupo">
@@ -765,7 +804,7 @@ menu.innerHTML = `
         </div>
         <div class="subcontenidoGrupo">
           <button data-opt="incomIP.resuelto" class="btnMenu">Resuelto</button>
-          <button data-opt="incomIP.no" class="btnMenu">Envio de Técnico</button>
+          <button data-opt="incomIP.no" class="btnMenu">Envío de técnico</button>
         </div>
 
         <div class="subtituloGrupo">
@@ -773,7 +812,7 @@ menu.innerHTML = `
           <i class="fa-solid fa-chevron-down" style="float:right;"></i>
         </div>
         <div class="subcontenidoGrupo">
-          <button data-opt="tecnicoIncumplido.esperaCita" class="btnMenu">Aun en tiempo de cita</button>
+          <button data-opt="tecnicoIncumplido.esperaCita" class="btnMenu">Aún en tiempo de cita</button>
           <button data-opt="tecnicoIncumplido.incumplimiento" class="btnMenu">Técnico incumplió</button>
         </div>
       </div>
@@ -793,6 +832,15 @@ menu.innerHTML = `
         <div class="subcontenidoGrupo">
           <button data-opt="mando.resuelto" class="btnMenu">Resuelto</button>
           <button data-opt="mando.no" class="btnMenu">No resuelto</button>
+        </div>
+
+        <div class="subtituloGrupo">
+          Canales
+          <i class="fa-solid fa-chevron-down" style="float:right;"></i>
+        </div>
+        <div class="subcontenidoGrupo">
+          <button data-opt="tv.canal" class="btnMenu">No ve algún canal</button>
+          <button data-opt="tv.deportivos" class="btnMenu">No salen canales deportivos</button>
         </div>
 
         <div class="subtituloGrupo">
@@ -826,15 +874,15 @@ menu.innerHTML = `
       /* Botones */
       .btnMenu {
         width: 100% !important;
-        padding: 7px !important;
-        margin: 4px 0 !important;
+        padding: 6px !important;
+        margin: 2px 0 !important;
         border-radius: 8px !important;
         border: none !important;
         color: white !important;
         background: #7b2cbf !important;
         cursor: pointer !important;
         transition: .15s !important;
-        font-size: 13px !important;
+        font-size: 12px !important;
       }
       .btnMenu:hover {
         background: #9d4edd !important;
@@ -843,13 +891,13 @@ menu.innerHTML = `
 
       /* Grupos */
       .tituloGrupo {
-        padding: 10px !important;
+        padding: 6px !important;
         background: #2a0f3a !important;
         border-radius: 8px !important;
-        margin-top: 10px !important;
+        margin-top: 6px !important;
         cursor: pointer !important;
         font-weight: bold !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         border: 1px solid #5a1e80 !important;
       }
       .tituloGrupo:hover {
@@ -858,12 +906,12 @@ menu.innerHTML = `
 
       /* Subgrupos */
       .subtituloGrupo {
-        padding: 6px !important;
+        padding: 3px !important;
         background: #2d1a3a !important;
         border-radius: 6px !important;
-        margin-top: 6px !important;
+        margin-top: 3px !important;
         cursor: pointer !important;
-        font-size: 13px !important;
+        font-size: 12px !important;
         border: 1px solid #5a1e80 !important;
       }
       .subtituloGrupo:hover {
@@ -873,10 +921,10 @@ menu.innerHTML = `
       /* Subcontenido alineado */
       .subcontenidoGrupo {
         display: none;
-        margin-left: 8px !important;
-        padding-left: 8px !important;
+        margin-left: 4px !important;
+        padding-left: 4px !important;
         border-left: 2px solid #9d4edd !important;
-        margin-bottom: 6px !important;
+        margin-bottom: 4px !important;
       }
 
       .tituloGrupo i, .subtituloGrupo i {
@@ -930,7 +978,9 @@ menu.querySelectorAll(".btnMenu").forEach(btn => {
       let texto = fn();
       if (texto instanceof Promise) texto = await texto;
       copiar(texto);
-      mostrarToast("Copiado correctamente");
+      const nombrePlantilla = btn.textContent.trim() || option;
+      mostrarToast(`Plantilla copiada: ${nombrePlantilla}`);
+      menu.remove();
     } else {
       mostrarToast("Error: plantilla no encontrada");
     }
@@ -944,3 +994,4 @@ menu.querySelectorAll(".btnMenu").forEach(btn => {
 menu.querySelector("#cerrarMenu").addEventListener("click", () => {
   menu.remove();
 });
+})();

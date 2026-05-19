@@ -391,13 +391,13 @@ const textosLentitud = {
     "• Diagnóstico: Saturación del router\n" +
     "• Solución: Se realizó reinicio de fábrica, se separan bandas y se comprueba con el cliente que el internet ya no va lento",
   tecnico:
-    "• Pruebas realizadas: Reinicio de fábrica sin mejora, test bajo\n" +
+    "• Pruebas realizadas: Reinicio de fábrica sin mejora, test bajo en 5G\n" +
     "• Diagnóstico: Posible daño en CPE o nodo\n" +
     "• Solución: Se envía contrata para revisión y posible cambio de CPE",
   nv2:
-    "• Pruebas realizadas: Test persistente bajo\n" +
-    "• Diagnóstico: Posible fallo en red\n" +
-    "• Solución: Se escala a NV2"
+    "• Pruebas realizadas: Reset de fábrica si está persistente bajo en banda 5G y en cableado\n" +
+    "• Diagnóstico: Posible fallo de saturación\n" +
+    "• Solución: Se escala a NV2 por lentitud persistente tras reinicio de fábrica para revisión de red"
 };
 
 const plantillaLentitud = estado => baseLentitud() + textosLentitud[estado];
@@ -418,7 +418,7 @@ const textosBandas = {
   no:
     "• Pruebas realizadas: No se pudo acceder al router\n" +
     "• Diagnóstico: CPE no responde\n" +
-    "• Solución: Se envía contrata; es Voxont y no hay acceso remoto"
+    "• Solución: Se envía contrata; cpe no hay acceso remoto"
 };
 
 const plantillaBandas = estado => baseBandas() + textosBandas[estado];
@@ -439,7 +439,7 @@ const textosWifi = {
   no:
     "• Pruebas realizadas: No se pudo acceder al router\n" +
     "• Diagnóstico: CPE no responde\n" +
-    "• Solución: Se envía contrata; es Voxont y no hay acceso remoto"
+    "• Solución: Se envía contrata; cpe no hay acceso remoto"
 };
 
 const plantillaWifi = estado => baseWifi() + textosWifi[estado];
@@ -514,8 +514,8 @@ const textosIncomIP = {
     "• Diagnóstico: CPE saturado\n" +
     "• Solución: Se deja resuelto",
   no:
-    "• Pruebas realizadas: CPE incomunicado por IP\n" +
-    "• Diagnóstico: pérdida de IP\n" +
+    "• Pruebas realizadas: CPE incomunicado por ip en schaman, se le hace reinicio de fábrica y sigue sin levantar ip, \n" +
+    "• Diagnóstico: pérdida de ip por posible saturación\n" +
     "• Solución: Se envía contrata"
 };
 
@@ -535,7 +535,7 @@ const textosMando = {
     "• Diagnóstico: desconfiguración\n" +
     "• Solución: Se deja resuelto",
   no:
-    "• Pruebas realizadas: mando sin luces, no empareja\n" +
+    "• Pruebas realizadas: mando sin luces, no empareja al decodificador\n" +
     "• Diagnóstico: mando defectuoso\n" +
     "• Solución: Se escala a NV2 para cambio"
 };

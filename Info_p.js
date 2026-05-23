@@ -210,7 +210,7 @@ const mostrarToast = msg => {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: linear-gradient(135deg, #6d28d9, #9d4edd);
+    background: linear-gradient(135deg, #c59bff, #7b2cbf);
     color: white;
     padding: 14px 18px;
     border-radius: 12px;
@@ -221,7 +221,7 @@ const mostrarToast = msg => {
     transition: opacity .3s ease, transform .3s ease;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   `;
-  t.innerHTML = `<strong style="display:block; margin-bottom:4px;">Copiado</strong><span style="font-size:12px;">${msg}</span>`;
+  t.innerHTML = `<strong style="display:block; margin-bottom:4px; color:#f3e6ff">Copiado</strong><span style="font-size:12px;">${msg}</span>`;
   document.body.appendChild(t);
   setTimeout(() => {
     t.style.opacity = "1";
@@ -685,7 +685,7 @@ menu.innerHTML = `
     border-radius: 16px !important;
     box-shadow: 0 0 28px rgba(128,0,255,0.35) !important;
     z-index: 999999 !important;
-    width: min(320px, 65vw) !important;
+    width: min(280px, 55vw) !important;
     max-height: 85vh !important;
     overflow-y: auto !important;
     font-family: Arial !important;
@@ -979,7 +979,11 @@ menu.querySelectorAll(".btnMenu").forEach(btn => {
       if (texto instanceof Promise) texto = await texto;
       copiar(texto);
       const nombrePlantilla = btn.textContent.trim() || option;
-      mostrarToast(`Plantilla copiada: ${nombrePlantilla}`);
+      if (grupo === "lentitud") {
+        mostrarToast(`Plantilla copiada: ${nombrePlantilla}<div style="font-size:11px;margin-top:6px;opacity:.95">Recuerda agregar el test de velocidad</div>`);
+      } else {
+        mostrarToast(`Plantilla copiada: ${nombrePlantilla}`);
+      }
       menu.remove();
     } else {
       mostrarToast("Error: plantilla no encontrada");

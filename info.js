@@ -488,7 +488,7 @@ const textosFuera = {
     resuelto:
       "• Pruebas realizadas: Se revisa en Schaman parámetros fuera de umbrales, se hace reinicio de fábrica, separación de bandas, test correcto\n" +
       "• Diagnóstico: Saturación del router\n" +
-      "• Solución: Se deja resuelto",
+      "• Solución: Se deja Se valdia conexion con el cliente que el internet ya no tiene cortes ni lentitud ni parámetros fuera de umbral",
     no:
       "• Pruebas realizadas: Fuera de umbrales en Schaman\n" +
       "• Diagnóstico: posible daño en nodo o CPE\n" +
@@ -512,7 +512,7 @@ const textosIncomIP = {
   resuelto:
     "• Pruebas realizadas: Ajuste de cableado, reinicio manual de fábrica, apertura de bandas, y el servicio levanta con IP correctamente\n" +
     "• Diagnóstico: CPE saturado\n" +
-    "• Solución: Se deja resuelto",
+    "• Solución: Se deja conexión estable y se comprueba con el cliente que el internet ya funciona correctamente",
   no:
     "• Pruebas realizadas: CPE incomunicado por ip en schaman, se le hace reinicio de fábrica y sigue sin levantar ip, \n" +
     "• Diagnóstico: pérdida de ip por posible saturación\n" +
@@ -533,7 +533,7 @@ const textosMando = {
   resuelto:
     "• Pruebas realizadas: emparejamiento, cambio de pilas, mando responde\n" +
     "• Diagnóstico: desconfiguración\n" +
-    "• Solución: Se deja resuelto",
+    "• Solución: Se deja emparejamiento del mando con el deco de manera corecta y se comprueba que responde a órdenes",
   no:
     "• Pruebas realizadas: mando sin luces, no empareja al decodificador\n" +
     "• Diagnóstico: mando defectuoso\n" +

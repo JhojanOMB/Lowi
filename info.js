@@ -212,16 +212,18 @@ const mostrarToast = msg => {
     right: 20px;
     background: linear-gradient(135deg, #c59bff, #7b2cbf);
     color: white;
-    padding: 14px 18px;
-    border-radius: 12px;
-    font-family: Arial, sans-serif;
+    padding: 16px 20px;
+    border-radius: 14px;
+    font-family: 'Segoe UI', Arial, sans-serif;
     z-index: 999999999;
     opacity: 0;
     transform: translateY(12px);
     transition: opacity .3s ease, transform .3s ease;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25), 0 0 30px rgba(199,125,255,0.3);
+    max-width: 350px;
+    border: 1px solid rgba(255,255,255,0.2);
   `;
-  t.innerHTML = `<strong style="display:block; margin-bottom:4px; color:#f3e6ff">Copiado</strong><span style="font-size:12px;">${msg}</span>`;
+  t.innerHTML = `<strong style="display:block; margin-bottom:6px; color:#f3e6ff; font-size:13px"><i class="fa-solid fa-check-circle" style="margin-right:8px"></i>Excelente</strong><span style="font-size:12px;line-height:1.5;">${msg}</span>`;
   document.body.appendChild(t);
   setTimeout(() => {
     t.style.opacity = "1";
@@ -231,7 +233,7 @@ const mostrarToast = msg => {
     t.style.opacity = "0";
     t.style.transform = "translateY(-10px)";
     setTimeout(() => t.remove(), 300);
-  }, 2200);
+  }, 2500);
 };
 
 // =========================
@@ -480,9 +482,9 @@ const textosFuera = {
       "• Diagnóstico: Saturación del router o parámetros degradados\n" +
       "• Solución: Se reinicia de fábrica, se reinician parámetros SNMP, se dividen bandas y se comprueba con el cliente que el internet ya no tiene cortes ni lentitud ni parámetros fuera de umbral",
     no:
-      "• Pruebas realizadas: Fuera de umbrales en THOT, reinicio de fábrica y reinicio de parámetros sin mejora\n" +
-      "• Diagnóstico: posible daño en nodo o CPE\n" +
-      "• Solución: Se envía contrata para revisión y posible cambio de CPE o revisión de nodo"
+      "• Pruebas realizadas: Fuera de umbrales en THOT, reinicio de fábrica y reinicio de parámetros (reinicio de flaps, reinicio de cablemodem y reinicio de snmp) sin mejora\n" +
+      "• Diagnóstico: posible daño en nodo o cpe\n" +
+      "• Solución: Se envía contrata para revisión y posible cambio de cpe"
   },
   FTTH: {
     resuelto:
@@ -609,6 +611,65 @@ const plantillaTecnicoIncumplido = estado =>
   baseTecnicoIncumplido() + textosTecnicoIncumplido[estado];
 
 // =========================
+// NO ACCESO INTERNET - IMPAGO
+// =========================
+
+const baseNoAccesoImpago = () =>
+  encabezado() + "• Qué dice el cliente que le sucede: No tengo acceso a internet\n";
+
+const textosNoAccesoImpago = {
+  impago:
+    "• Pruebas realizadas: Se valida en Schaman que el servicio está congelado por impago, se verifica en BO Web igual\n" +
+    "• Diagnóstico: No hay fibra por impago del cliente\n" +
+    "• Solución: Se envía a servicio al cliente para validar si pagó y descongelen el servicio"
+};
+
+const plantillaNoAccesoImpago = () => baseNoAccesoImpago() + textosNoAccesoImpago.impago;
+
+// =========================
+// ERROR 106 - TV
+// =========================
+
+const base106 = () =>
+  encabezado() +
+  "• Qué dice el cliente que le sucede: Me sale error 106\n";
+
+const textos106 = {
+  resuelto:
+    "• Pruebas realizadas: Se revisa la MAC del deco, es la misma registrada en el sistema, se realiza reinicio de fábrica y el error se resuelve\n" +
+    "• Diagnóstico: Desconfiguración del deco\n" +
+    "• Solución: Se realiza reinicio de fábrica y se verifica que el error ya no aparece",
+  nv2:
+    "• Pruebas realizadas: Se revisa la MAC del deco, no es la misma registrada en el sistema\n" +
+    "• Diagnóstico: MAC diferente, posible cambio de hardware\n" +
+    "• Solución: Se escala a NV2 para revisión y validación de equipamiento"
+};
+
+const plantilla106 = estado => base106() + textos106[estado];
+
+// =========================
+// MIGRACIONES HFC A FIBRA
+// =========================
+
+const basesMigracion = () =>
+  encabezado();
+
+const textosMigracion = {
+  sinNotas:
+    "• Qué dice el cliente que le sucede: Quiero migrar a fibra óptica\n" +
+    "• Pruebas realizadas: Se accede al expediente técnico y no hay notas del técnico anterior\n" +
+    "• Diagnóstico: No hay información técnica disponible\n" +
+    "• Solución: Se requiere levantar nueva visita técnica para evaluar viabilidad de la migración",
+  conNotas:
+    "• Qué dice el cliente que le sucede: Solicita migración de HFC a fibra óptica\n" +
+    "• Pruebas realizadas: Se revisa expediente técnico y se valida que se pueden realizar el proceso, se prepara plantilla de migración\n" +
+    "• Diagnóstico: Migración es viable\n" +
+    "• Solución: Se envía en plantilla de migraciones y se le informa al cliente que lo van a llamar para refirmar el contrato con el mismo precio y la nueva tecnología"
+};
+
+const plantillaMigracion = estado => basesMigracion() + textosMigracion[estado];
+
+// =========================
 // OBJETO DE PLANTILLAS
 // =========================
 
@@ -663,6 +724,17 @@ const plantillas = {
   tecnicoIncumplido: {
     esperaCita: () => plantillaTecnicoIncumplido("esperaCita"),
     incumplimiento: () => plantillaTecnicoIncumplido("incumplimiento")
+  },
+  noAccesoImpago: {
+    impago: () => plantillaNoAccesoImpago()
+  },
+  error106: {
+    resuelto: () => plantilla106("resuelto"),
+    nv2: () => plantilla106("nv2")
+  },
+  migracion: {
+    sinNotas: () => plantillaMigracion("sinNotas"),
+    conNotas: () => plantillaMigracion("conNotas")
   }
 };
 
@@ -681,19 +753,19 @@ menu.innerHTML = `
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    padding: 10px !important;
-    border-radius: 16px !important;
-    box-shadow: 0 0 28px rgba(128,0,255,0.35) !important;
+    padding: 12px !important;
+    border-radius: 18px !important;
+    box-shadow: 0 0 40px rgba(128,0,255,0.4), 0 0 60px rgba(199,125,255,0.2) !important;
     z-index: 999999 !important;
-    width: min(280px, 55vw) !important;
-    max-height: 85vh !important;
+    width: min(320px, 65vw) !important;
+    max-height: 88vh !important;
     overflow-y: auto !important;
-    font-family: Arial !important;
-    font-size: 12px !important;
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+    font-size: 13px !important;
     text-align: left !important;
-    background:#1a0f1f !important;
+    background: linear-gradient(135deg, #1a0f1f 0%, #2d1a3a 100%) !important;
     color:white !important;
-    border: 1px solid #5a1e80 !important;
+    border: 2px solid #7b2cbf !important;
   ">
     <div id="cerrarMenu" style="
       position:absolute !important;
@@ -710,22 +782,23 @@ menu.innerHTML = `
       color:#d9a6ff !important;
       font-weight:600 !important;
       letter-spacing:.5px !important;
-      font-size:15px !important;
-      margin-bottom:4px !important;
-    ">Generador de Plantillas</h2>
+      font-size:16px !important;
+      margin-bottom:8px !important;
+    "></i>Generador de Plantillas</h2>
 
     <p style="
       text-align:center !important;
-      margin-top:-6px !important;
-      color:#c9c9c9 !important;
-      font-size:12px !important;
-    ">Selecciona la tipificación que necesites</p>
+      margin-top:-4px !important;
+      color:#a89cc9 !important;
+      font-size:11px !important;
+      font-weight:500 !important;
+    ">Elige la categoría y tipificación</p>
 
     <!-- INTERNET -->
     <div class="grupo">
       <div class="tituloGrupo abierto">
         <i class="fa-solid fa-wifi"></i> Internet / WiFi
-        <i class="fa-solid fa-chevron-down" style="float:right;"></i>
+        <i class="fa-solid fa-chevron-down" style="float:right;margin-left:auto;"></i>
       </div>
       <div class="contenidoGrupo" style="display:block !important;">
         <div class="subtituloGrupo">
@@ -815,14 +888,22 @@ menu.innerHTML = `
           <button data-opt="tecnicoIncumplido.esperaCita" class="btnMenu">Aún en tiempo de cita</button>
           <button data-opt="tecnicoIncumplido.incumplimiento" class="btnMenu">Técnico incumplió</button>
         </div>
+
+        <div class="subtituloGrupo">
+          Sin Acceso - Impago
+          <i class="fa-solid fa-chevron-down" style="float:right;"></i>
+        </div>
+        <div class="subcontenidoGrupo">
+          <button data-opt="noAccesoImpago.impago" class="btnMenu">Servicio Congelado</button>
+        </div>
       </div>
     </div>
 
     <!-- TV -->
     <div class="grupo">
       <div class="tituloGrupo">
-        <i class="fa-solid fa-tv"></i> TV
-        <i class="fa-solid fa-chevron-down" style="float:right;"></i>
+        <i class="fa-solid fa-tv"></i> Televisión
+        <i class="fa-solid fa-chevron-down" style="float:right;margin-left:auto;"></i>
       </div>
       <div class="contenidoGrupo" style="display:none !important;">
         <div class="subtituloGrupo">
@@ -851,80 +932,127 @@ menu.innerHTML = `
           <button data-opt="error101.informacion" class="btnMenu">Esperar activación</button>
           <button data-opt="error101.nv2" class="btnMenu">Escalar a NV2</button>
         </div>
+
+        <div class="subtituloGrupo">
+          Error 106
+          <i class="fa-solid fa-chevron-down" style="float:right;"></i>
+        </div>
+        <div class="subcontenidoGrupo">
+          <button data-opt="error106.resuelto" class="btnMenu">Resuelto con Reinicio</button>
+          <button data-opt="error106.nv2" class="btnMenu">Escalar a NV2</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIGRACIONES -->
+    <div class="grupo">
+      <div class="tituloGrupo">
+        <i class="fa-solid fa-arrows-turn-to-dots"></i> Migraciones
+        <i class="fa-solid fa-chevron-down" style="float:right;margin-left:auto;"></i>
+      </div>
+      <div class="contenidoGrupo" style="display:none !important;">
+        <div class="subtituloGrupo">
+          HFC a Fibra Óptica
+          <i class="fa-solid fa-chevron-down" style="float:right;"></i>
+        </div>
+        <div class="subcontenidoGrupo">
+          <button data-opt="migracion.sinNotas" class="btnMenu">Sin Notas Técnicas</button>
+          <button data-opt="migracion.conNotas" class="btnMenu">Migración Viable</button>
+        </div>
       </div>
     </div>
 
     <style>
       /* Scroll personalizado */
       #menuCopi::-webkit-scrollbar {
-        width: 8px;
+        width: 10px;
       }
       #menuCopi::-webkit-scrollbar-track {
-        background: #2a0f3a;
+        background: rgba(106, 39, 176, 0.1);
         border-radius: 10px;
       }
       #menuCopi::-webkit-scrollbar-thumb {
-        background: #9d4edd;
+        background: linear-gradient(180deg, #9d4edd, #c77dff);
         border-radius: 10px;
       }
       #menuCopi::-webkit-scrollbar-thumb:hover {
-        background: #c77dff;
+        background: linear-gradient(180deg, #c77dff, #e0aaff);
       }
 
-      /* Botones */
+      /* Botones - Mejorados */
       .btnMenu {
         width: 100% !important;
-        padding: 6px !important;
-        margin: 2px 0 !important;
+        padding: 8px 12px !important;
+        margin: 3px 0 !important;
         border-radius: 8px !important;
-        border: none !important;
+        border: 1px solid rgba(199, 125, 255, 0.3) !important;
         color: white !important;
-        background: #7b2cbf !important;
+        background: linear-gradient(135deg, #7b2cbf, #9d4edd) !important;
         cursor: pointer !important;
-        transition: .15s !important;
+        transition: .2s !important;
         font-size: 12px !important;
+        font-weight: 500 !important;
       }
       .btnMenu:hover {
-        background: #9d4edd !important;
+        background: linear-gradient(135deg, #9d4edd, #c77dff) !important;
         transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(199, 125, 255, 0.3) !important;
       }
 
-      /* Grupos */
+      /* Grupos - Mejorados */
       .tituloGrupo {
-        padding: 6px !important;
-        background: #2a0f3a !important;
-        border-radius: 8px !important;
-        margin-top: 6px !important;
+        padding: 10px 12px !important;
+        background: linear-gradient(135deg, #2d1a3a, #3b2250) !important;
+        border-radius: 10px !important;
+        margin-top: 8px !important;
         cursor: pointer !important;
-        font-weight: bold !important;
+        font-weight: 600 !important;
         font-size: 13px !important;
-        border: 1px solid #5a1e80 !important;
+        border: 1.5px solid #7b2cbf !important;
+        transition: .2s !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
       }
       .tituloGrupo:hover {
-        background: #3a1450 !important;
+        background: linear-gradient(135deg, #3b2250, #4a2e5f) !important;
+        border-color: #9d4edd !important;
+        transform: translateX(2px) !important;
       }
 
-      /* Subgrupos */
+      .tituloGrupo i:first-child {
+        color: #c77dff !important;
+        min-width: 20px !important;
+      }
+
+      /* Subgrupos - Mejorados */
       .subtituloGrupo {
-        padding: 3px !important;
-        background: #2d1a3a !important;
-        border-radius: 6px !important;
-        margin-top: 3px !important;
+        padding: 6px 10px !important;
+        background: rgba(45, 26, 58, 0.7) !important;
+        border-radius: 8px !important;
+        margin-top: 4px !important;
         cursor: pointer !important;
         font-size: 12px !important;
-        border: 1px solid #5a1e80 !important;
+        border: 1px solid #9d4edd !important;
+        transition: .15s !important;
+        font-weight: 500 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
       }
       .subtituloGrupo:hover {
-        background: #3b2250 !important;
+        background: rgba(61, 34, 80, 0.9) !important;
+        border-color: #c77dff !important;
       }
 
       /* Subcontenido alineado */
       .subcontenidoGrupo {
         display: none;
-        margin-left: 4px !important;
-        padding-left: 4px !important;
-        border-left: 2px solid #9d4edd !important;
-        margin-bottom: 4px !important;
+        margin-left: 6px !important;
+        margin-top: 3px !important;
+        padding: 6px 0 6px 6px !important;
+        border-left: 3px solid #c77dff !important;
+        margin-bottom: 6px !important;
       }
 
       .tituloGrupo i, .subtituloGrupo i {
@@ -979,11 +1107,19 @@ menu.querySelectorAll(".btnMenu").forEach(btn => {
       if (texto instanceof Promise) texto = await texto;
       copiar(texto);
       const nombrePlantilla = btn.textContent.trim() || option;
+      let toastMsg = `Plantilla copiada: ${nombrePlantilla}`;
+      let extraInfo = "";
+      
       if (grupo === "lentitud") {
-        mostrarToast(`Plantilla copiada: ${nombrePlantilla}<div style="font-size:11px;margin-top:6px;opacity:.95">Recuerda agregar el test de velocidad</div>`);
-      } else {
-        mostrarToast(`Plantilla copiada: ${nombrePlantilla}`);
+        extraInfo = "<div style=\"font-size:11px;margin-top:6px;opacity:.95\">Recuerda agregar el test de velocidad</div>";
+      } else if (grupo === "migracion") {
+        extraInfo = "<div style=\"font-size:11px;margin-top:6px;opacity:.95\">Importante: Refirmar contrato con cliente</div>";
+      } else if (grupo === "noAccesoImpago") {
+        extraInfo = "<div style=\"font-size:11px;margin-top:6px;opacity:.95\">Escalar a Servicio al Cliente</div>";
       }
+      
+      if (extraInfo) toastMsg += extraInfo;
+      mostrarToast(toastMsg);
       menu.remove();
     } else {
       mostrarToast("Error: plantilla no encontrada");

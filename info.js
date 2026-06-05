@@ -346,7 +346,7 @@ const baseCortes = () =>
 const textosCortes = {
   HFC: {
     resuelto:
-      "• Pruebas realizadas: Se revisa en THOT que hay cortes en los últimos 7 días, se hace reinicio de fábrica, ajuste de cableado y separación de bandas, y la conexión a internet queda estable sin cortes\n" +
+      "• Pruebas realizadas: Se revisa en THOT que hay cortes en los últimos 7 días, se hace reinicio de fábrica y reinicio de parámetros (reinicio de flaps, reinicio de cablemodem y reinicio de snmp), ajuste de cableado y separación de bandas, y la conexión a internet queda estable sin cortes\n" +
       "• Diagnóstico: Saturación temporal del CPE\n" +
       "• Solución: Se hace reinicio de fábrica, se dividen bandas y se comprueba con el cliente que el internet ya no tiene cortes",
     tecnico:

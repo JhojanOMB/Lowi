@@ -429,22 +429,29 @@ const plantillaBandas = estado => baseBandas() + textosBandas[estado];
 // WIFI CONTRASEÑA
 // =========================
 
-const baseWifi = () =>
-  encabezado() +
-  "• Qué dice el cliente que le sucede: Quiero cambiar la contraseña del WiFi\n";
+const baseContraseña = () =>
+  encabezado();
 
-const textosWifi = {
+const textosContraseña = {
   resuelto:
+    "• Qué dice el cliente que le sucede: Quiero cambiar la contraseña del WiFi\n" +
     "• Pruebas realizadas: Se accede al router, se modifica la clave\n" +
     "• Diagnóstico: Requería cambio de clave\n" +
     "• Solución: Se cambió la contraseña y se comprueba conexión correcta con la nueva clave",
-  no:
+  nv2:
+    "• Qué dice el cliente que le sucede: Quiero cambiar la contraseña del WiFi\n" +    
     "• Pruebas realizadas: No se pudo acceder al router\n" +
     "• Diagnóstico: CPE no responde\n" +
-    "• Solución: Se envía contrata; cpe no hay acceso remoto"
+    "• Solución: Se envía escala nv2 para validación de si pueden cambiarla ellos ya que cpe no hay acceso remoto",
+  cambiaCliente:
+    "• Qué dice el cliente que le sucede: Quiero cambiar la contraseña del WiFi yo mismo\n" +
+    "• Pruebas realizadas: Se indica paso a paso al cliente como entrar al router y se le indica que en la pegatina del router estan las credenciales para que ingrese,s e le explica en que pestaña y ya la modifica\n" +
+    "• Diagnóstico: Requería cambio de clave\n" +
+    "• Solución: Se le indica al cliente que en la pegatina del router estan las credenciales para que ingrese al router, se le explica en que pestaña puede cambiar la contraseña y se le guía para que lo haga él mismo, se comprueba conexión correcta con la nueva clave"
+
 };
 
-const plantillaWifi = estado => baseWifi() + textosWifi[estado];
+const plantillaContraseña = estado => baseContraseña() + textosContraseña[estado];
 
 // =========================
 // AVERÍA MASIVA
@@ -488,11 +495,11 @@ const textosFuera = {
   },
   FTTH: {
     resuelto:
-      "• Pruebas realizadas: Se revisa en Schaman parámetros fuera de umbrales, se hace reinicio de fábrica, separación de bandas, test correcto\n" +
+      "• Pruebas realizadas: Se revisa en Schaman parámetros fuera de umbrales, se hace reinicio de fábrica, separación de bandas, ya no sale fuera de umbrales\n" +
       "• Diagnóstico: Saturación del router\n" +
       "• Solución: Se deja Se valdia conexion con el cliente que el internet ya no tiene cortes ni lentitud ni parámetros fuera de umbral",
     no:
-      "• Pruebas realizadas: Fuera de umbrales en Schaman\n" +
+      "• Pruebas realizadas: Se revisa en Schaman parámetros fuera de umbrales, se hace reinicio de fábrica, separación de bandas, sigue saliendo fuera de umbrales\n" +
       "• Diagnóstico: posible daño en nodo o CPE\n" +
       "• Solución: Se envía contrata para revisión y posible cambio de CPE o revisión de nodo"
   }
@@ -516,9 +523,9 @@ const textosIncomIP = {
     "• Diagnóstico: CPE saturado\n" +
     "• Solución: Se deja conexión estable y se comprueba con el cliente que el internet ya funciona correctamente",
   no:
-    "• Pruebas realizadas: CPE incomunicado por ip en schaman, se le hace reinicio de fábrica y sigue sin levantar ip, \n" +
+    "• Pruebas realizadas: CPE incomunicado por ip en Schaman, se le hace reinicio de fábrica y sigue sin levantar ip, se revisa el cableado esta bien conectado en el puerto correspondiente \n" +
     "• Diagnóstico: pérdida de ip por posible saturación\n" +
-    "• Solución: Se envía contrata"
+    "• Solución: Se envía contrata para revisión y posible cambio de CPE"
 };
 
 const plantillaIncomIP = estado => baseIncomIP() + textosIncomIP[estado];
@@ -543,9 +550,6 @@ const textosMando = {
 };
 
 const plantillaMando = estado => baseMando() + textosMando[estado];
-
-// =========================
-// TV
 
 const baseTVCanal = () =>
   encabezado() +
@@ -619,7 +623,7 @@ const baseNoAccesoImpago = () =>
 
 const textosNoAccesoImpago = {
   impago:
-    "• Pruebas realizadas: Se valida en Schaman que el servicio está congelado por impago, se verifica en BO Web igual\n" +
+    "• Pruebas realizadas: Se valida en Schaman que el servicio está congelado por impago, se verifica en BO Web esta frozen\n" +
     "• Diagnóstico: No hay fibra por impago del cliente\n" +
     "• Solución: Se envía a servicio al cliente para validar si pagó y descongelen el servicio"
 };
@@ -641,7 +645,7 @@ const textos106 = {
     "• Solución: Se realiza reinicio de fábrica y se verifica que el error ya no aparece",
   nv2:
     "• Pruebas realizadas: Se revisa la MAC del deco, no es la misma registrada en el sistema\n" +
-    "• Diagnóstico: MAC diferente, posible cambio de hardware\n" +
+    "• Diagnóstico: MAC diferente, posible cambio de decodificador y nuevo MAC\n" +
     "• Solución: Se escala a NV2 para revisión y validación de equipamiento"
 };
 
@@ -669,6 +673,31 @@ const textosMigracion = {
 
 const plantillaMigracion = estado => basesMigracion() + textosMigracion[estado];
 
+const baseLlamadanovalida = () =>
+  encabezado();
+
+const textosLlamadaNoValida = { 
+  noValidaCuelga:
+    "• Qué dice el cliente que le sucede: no dice nada\n" +
+    "• Pruebas realizadas: Ninguna, cliente cuelga la llamada no se puede gestionar\n" +
+    "• Diagnóstico: Llamada no válida\n" +
+    "• Solución: Se tipifica como llamada no válida y se cierra el caso sin gestión",
+  noValidaFicha:
+    "• Qué dice el cliente que le sucede: indica mal el DNI\n" +
+    "• Pruebas realizadas: Ninguna, cliente indico DNI incorrecto para la gestión\n" +
+    "• Diagnóstico: Ficha no válida\n" +
+    "• Solución: Se tipifica como ficha no válida y se cierra para abrir una nueva con DNI correcto para su gestión",
+  noValidaSinDNI: 
+    "• Qué dice el cliente que le sucede: no indica DNI\n" +
+    "• Pruebas realizadas: Ninguna, cliente no indica DNI para la gestión\n" +
+    "• Diagnóstico: Ficha sin DNI\n" +
+    "• Solución: Se tipifica como ficha sin DNI y se cierra llamada ya que no tiene DNI para gestionar el caso, se le indica al cliente que vuelva a llamar con su DNI para poder gestionar su caso"
+};  
+
+const plantillaLlamadanovalida = estado =>
+  baseLlamadanovalida() + textosLlamadaNoValida[estado];
+
+
 // =========================
 // OBJETO DE PLANTILLAS
 // =========================
@@ -693,9 +722,10 @@ const plantillas = {
   bandas: {
     separar: () => plantillaBandas("separar")
   },
-  wifi: {
-    resuelto: () => plantillaWifi("resuelto"),
-    no: () => plantillaWifi("no")
+  contraseña: {
+    resuelto: () => plantillaContraseña("resuelto"),
+    nv2: () => plantillaContraseña("nv2"),
+    cambiaCliente: () => plantillaContraseña("cambiaCliente")
   },
   mando: {
     resuelto: () => plantillaMando("resuelto"),
@@ -735,7 +765,338 @@ const plantillas = {
   migracion: {
     sinNotas: () => plantillaMigracion("sinNotas"),
     conNotas: () => plantillaMigracion("conNotas")
+  },
+  llamadaNoValida: {  
+    noValidaCuelga: () => plantillaLlamadanovalida("noValidaCuelga"),
+    noValidaFicha: () => plantillaLlamadanovalida("noValidaFicha"),
+    noValidaSinDNI: () => plantillaLlamadanovalida("noValidaSinDNI")
+    }
+};
+
+// =========================
+// AVISOS / INFO POR PLANTILLA
+// =========================
+
+const avisosPlantillas = {
+  "plantillaOriginal.normal": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Plantilla limpia para consultas generales."
+  },
+
+  "incomTotal.tecnico": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Usa esta opción cuando el cliente se queda sin internet por completo."
+  },
+
+  "cortes.resuelto": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Plantilla para cortes resueltos tras reinicio, ajuste de bandas y validación final."
+  },
+  "cortes.tecnico": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Úsala cuando los cortes persisten y necesitas enviar técnico."
+  },
+  "cortes.nv2": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Úsala cuando los cortes siguen y se debe escalar a NV2."
+  },
+
+  "lentitud.resuelto": {
+    tipo: "warning",
+    titulo: "Importante",
+    texto: "No olvides verificar y anotar la velocidad obtenida en el test."
+  },
+  "lentitud.tecnico": {
+    tipo: "warning",
+    titulo: "Importante",
+    texto: "No olvides verificar y anotar la velocidad obtenida en el test."
+  },
+  "lentitud.nv2": {
+    tipo: "warning",
+    titulo: "Importante",
+    texto: "No olvides verificar y anotar la velocidad obtenida en el test."
+  },
+
+  "contraseña.resuelto": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se cambia la contraseña del WiFi y se comprueba conexión correcta."
+  },
+  "contraseña.nv2": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Se usa cuando no se puede acceder al router y toca escalar."
+  },
+  "contraseña.cambiaCliente": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se le enseña al cliente a entrar al router y cambiar la clave por su cuenta."
+  },
+
+  "masiva.informacion": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se informa al cliente sobre la avería masiva y se le pide esperar."
+  },
+  "masiva.ticket": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se informa sobre la masiva, tiempos aproximados y posible bono de datos."
+  },
+
+  "fuera.resuelto": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se corrigen parámetros fuera de umbral y se valida que ya quedó estable."
+  },
+  "fuera.no": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Úsala cuando persisten los parámetros fuera de umbral y hay que enviar técnico."
+  },
+
+  "bandas.separar": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se separan 2.4 GHz y 5 GHz para dejar las redes por separado."
+  },
+
+  "incomIP.resuelto": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se levanta la IP correctamente tras reinicio y ajuste de cableado."
+  },
+  "incomIP.no": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Se usa cuando sigue sin levantar IP y toca enviar contrata."
+  },
+
+  "tecnicoIncumplido.esperaCita": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "La cita sigue dentro de la franja horaria y todavía no hay incumplimiento."
+  },
+  "tecnicoIncumplido.incumplimiento": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Se usa cuando el técnico ya incumplió la visita."
+  },
+
+  "noAccesoImpago.impago": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Derivar a Servicio al Cliente para validar pago y descongelación."
+  },
+
+  "llamadaNoValida.noValidaCuelga": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se tipifica como llamada no válida porque el cliente cuelga."
+  },
+  "llamadaNoValida.noValidaFicha": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se tipifica como ficha no válida porque el DNI fue incorrecto."
+  },
+  "llamadaNoValida.noValidaSinDNI": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se cierra porque el cliente no dio DNI para gestionar."
+  },
+
+  "mando.resuelto": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se empareja el mando, se cambian pilas y se valida funcionamiento."
+  },
+  "mando.no": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Se usa cuando el mando no responde y toca escalar por fallo."
+  },
+
+  "tv.canal": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se indica al cliente cuál es el canal que no localiza."
+  },
+  "tv.deportivos": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se reinicia el deco y se revisa la lista completa de canales deportivos."
+  },
+
+  "error101.informacion": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se usa cuando el deco aún no cumplió el tiempo de activación."
+  },
+  "error101.nv2": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Se usa cuando ya pasaron las 48 horas y toca escalar por MAC diferente."
+  },
+
+  "error106.resuelto": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "Se resuelve con reinicio de fábrica y validación de MAC correcta."
+  },
+  "error106.nv2": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "Se usa cuando la MAC no coincide y hay que escalar."
+  },
+
+  "migracion.sinNotas": {
+    tipo: "warning",
+    titulo: "Aviso",
+    texto: "No hay notas técnicas y se debe levantar nueva visita."
+  },
+  "migracion.conNotas": {
+    tipo: "info",
+    titulo: "Info",
+    texto: "La migración es viable y se informa al cliente que lo llamarán para refirmar."
   }
+};
+
+// =========================
+// TOASTS BONITOS
+// =========================
+
+const mostrarAviso = (titulo, texto, tipo = "warning") => {
+  const estilos = {
+    warning: {
+      fondo: "linear-gradient(135deg, #2d1a3a, #7b2cbf)",
+      borde: "rgba(199, 125, 255, 0.45)",
+      icono: "fa-triangle-exclamation",
+      posicion: "center"
+    },
+    info: {
+      fondo: "linear-gradient(135deg, #1e1b4b, #7c3aed)",
+      borde: "rgba(199, 125, 255, 0.45)",
+      icono: "fa-circle-info",
+      posicion: "top-right"
+    }
+  };
+
+  const e = estilos[tipo] || estilos.warning;
+
+  const t = document.createElement("div");
+  t.style = `
+    position: fixed;
+    ${e.posicion === "center" ? "top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.96);" : "top: 20px; right: 20px; transform: translateY(-12px);"}
+    background: ${e.fondo};
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    z-index: 999999999;
+    opacity: 0;
+    transition: opacity .25s ease, transform .25s ease;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25), 0 0 30px ${e.borde};
+    max-width: 360px;
+    border: 1px solid ${e.borde};
+  `;
+
+  t.innerHTML = `
+    <strong style="display:block; margin-bottom:6px; color:#fff5d6; font-size:13px">
+      <i class="fa-solid ${e.icono}" style="margin-right:8px"></i>${titulo}
+    </strong>
+    <span style="font-size:12px;line-height:1.5;">${texto}</span>
+  `;
+
+  document.body.appendChild(t);
+
+  setTimeout(() => {
+    t.style.opacity = "1";
+    if (e.posicion === "center") {
+      t.style.transform = "translate(-50%, -50%) scale(1)";
+    } else {
+      t.style.transform = "translateY(0)";
+    }
+  }, 10);
+
+  setTimeout(() => {
+    t.style.opacity = "0";
+    if (e.posicion === "center") {
+      t.style.transform = "translate(-50%, -50%) scale(0.96)";
+    } else {
+      t.style.transform = "translateY(-12px)";
+    }
+    setTimeout(() => t.remove(), 250);
+  }, 2600);
+};
+
+// =========================
+// BOTÓN INFO CON DROP INLINE
+// =========================
+
+const cerrarDropsInfo = () => {
+  document.querySelectorAll(".dropInfo").forEach(d => d.remove());
+};
+
+const inyectarBotonesInfo = () => {
+  const botones = Array.from(document.querySelectorAll(".btnMenu"));
+
+  botones.forEach(btn => {
+    const opt = btn.getAttribute("data-opt");
+    const aviso = avisosPlantillas[opt];
+    if (!aviso) return;
+
+    if (btn.dataset.infoProcesado === "1") return;
+    btn.dataset.infoProcesado = "1";
+
+    const fila = document.createElement("div");
+    fila.className = "filaAccion";
+
+    btn.parentNode.insertBefore(fila, btn);
+    fila.appendChild(btn);
+
+    const infoBtn = document.createElement("button");
+    infoBtn.type = "button";
+    infoBtn.className = "btnInfo";
+    infoBtn.innerHTML = `<i class="fa-solid fa-circle-chevron-down"></i>`;
+    infoBtn.title = "Ver info";
+
+    infoBtn.addEventListener("click", e => {
+      e.stopPropagation();
+
+      const existente = fila.querySelector(".dropInfo");
+      if (existente) {
+        existente.remove();
+        return;
+      }
+
+      cerrarDropsInfo();
+
+      const drop = document.createElement("div");
+      drop.className = "dropInfo";
+      drop.innerHTML = `
+        <div class="dropInfoTitulo">
+          <i class="fa-solid ${aviso.tipo === "warning" ? "fa-triangle-exclamation" : "fa-circle-info"}"></i>
+          ${aviso.titulo}
+        </div>
+        <div class="dropInfoTexto">${aviso.texto}</div>
+      `;
+
+      fila.insertAdjacentElement("afterend", drop);
+    });
+
+    fila.appendChild(infoBtn);
+  });
+
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".filaAccion") && !e.target.closest(".dropInfo")) {
+      cerrarDropsInfo();
+    }
+  });
 };
 
 // =========================
@@ -838,11 +1199,13 @@ menu.innerHTML = `
         </div>
 
         <div class="subtituloGrupo">
-          Cambio Contraseña
+          Contraseña
           <i class="fa-solid fa-chevron-down" style="float:right;"></i>
         </div>
         <div class="subcontenidoGrupo">
-          <button data-opt="wifi.resuelto" class="btnMenu">Cambio de Contraseña</button>
+          <button data-opt="contraseña.resuelto" class="btnMenu">Cambio de Contraseña</button>
+          <button data-opt="contraseña.nv2" class="btnMenu">Escalar a NV2</button>
+          <button data-opt="contraseña.cambiaCliente" class="btnMenu">Cambiada por Cliente</button>
         </div>
 
         <div class="subtituloGrupo">
@@ -896,6 +1259,17 @@ menu.innerHTML = `
         <div class="subcontenidoGrupo">
           <button data-opt="noAccesoImpago.impago" class="btnMenu">Servicio Congelado</button>
         </div>
+
+        <div class="subtituloGrupo">
+          Llamada No Válida 
+          <i class="fa-solid fa-chevron-down" style="float:right;"></i>
+        </div>
+        <div class="subcontenidoGrupo">
+          <button data-opt="llamadaNoValida.noValidaCuelga" class="btnMenu">Llamada Cuelga</button>
+          <button data-opt="llamadaNoValida.noValidaFicha" class="btnMenu">Ficha No Válida</button>
+          <button data-opt="llamadaNoValida.noValidaSinDNI" class="btnMenu">Sin DNI</button>
+        </div>
+
       </div>
     </div>
 
@@ -979,11 +1353,39 @@ menu.innerHTML = `
         background: linear-gradient(180deg, #c77dff, #e0aaff);
       }
 
-      /* Botones - Mejorados */
+      /* FILA BOTÓN + INFO */
+      .filaAccion {
+        display: flex !important;
+        gap: 6px !important;
+        margin: 3px 0 !important;
+      }
+
+      .filaAccion .btnMenu {
+        flex: 1 !important;
+        margin: 0 !important;
+      }
+
+      /* BOTÓN INFO */
+      .btnInfo {
+        width: 34px !important;
+        min-width: 34px !important;
+        border-radius: 8px !important;
+        border: 1px solid rgba(199,125,255,.35) !important;
+        background: rgba(124,58,237,.25) !important;
+        color: #fff !important;
+        cursor: pointer !important;
+        transition: .2s !important;
+      }
+
+      .btnInfo:hover {
+        background: rgba(124,58,237,.5) !important;
+        transform: translateY(-1px) !important;
+      }
+
+      /* BOTONES */
       .btnMenu {
         width: 100% !important;
         padding: 8px 12px !important;
-        margin: 3px 0 !important;
         border-radius: 8px !important;
         border: 1px solid rgba(199, 125, 255, 0.3) !important;
         color: white !important;
@@ -993,6 +1395,7 @@ menu.innerHTML = `
         font-size: 12px !important;
         font-weight: 500 !important;
       }
+
       .btnMenu:hover {
         background: linear-gradient(135deg, #9d4edd, #c77dff) !important;
         transform: translateY(-2px) !important;
@@ -1102,27 +1505,39 @@ menu.querySelectorAll(".btnMenu").forEach(btn => {
     const option = btn.getAttribute("data-opt");
     const [grupo, clave] = option.split(".");
     const fn = plantillas?.[grupo]?.[clave];
+
     if (typeof fn === "function") {
       let texto = fn();
-      if (texto instanceof Promise) texto = await texto;
-      copiar(texto);
-      const nombrePlantilla = btn.textContent.trim() || option;
-      let toastMsg = `Plantilla copiada: ${nombrePlantilla}`;
-      let extraInfo = "";
-      
-      if (grupo === "lentitud") {
-        extraInfo = "<div style=\"font-size:11px;margin-top:6px;opacity:.95\">Recuerda agregar el test de velocidad</div>";
-      } else if (grupo === "migracion") {
-        extraInfo = "<div style=\"font-size:11px;margin-top:6px;opacity:.95\">Importante: Refirmar contrato con cliente</div>";
-      } else if (grupo === "noAccesoImpago") {
-        extraInfo = "<div style=\"font-size:11px;margin-top:6px;opacity:.95\">Escalar a Servicio al Cliente</div>";
+
+      if (texto instanceof Promise) {
+        texto = await texto;
       }
-      
-      if (extraInfo) toastMsg += extraInfo;
-      mostrarToast(toastMsg);
+
+      copiar(texto);
+
+      const nombrePlantilla = btn.textContent.trim() || option;
+
+      mostrarToast(`Plantilla copiada: ${nombrePlantilla}`);
+
+      const aviso = avisosPlantillas[option];
+
+      if (aviso) {
+        setTimeout(() => {
+          mostrarAviso(
+            aviso.titulo,
+            aviso.texto,
+            aviso.tipo
+          );
+        }, 150);
+      }
+
       menu.remove();
     } else {
-      mostrarToast("Error: plantilla no encontrada");
+      mostrarAviso(
+        "Error",
+        "Plantilla no encontrada",
+        "warning"
+      );
     }
   });
 });

@@ -530,6 +530,22 @@ const textosIncomIP = {
 
 const plantillaIncomIP = estado => baseIncomIP() + textosIncomIP[estado];
 
+const baseIncomWarning = () =>
+  encabezado() + "• Qué dice el cliente que le sucede: No tengo internet\n";
+
+const textosIncomWarning = {
+  resuelto:
+    "• Pruebas realizadas: Se revisa en Schaman que el servicio está en warning, se le hace reinicio de fábrica al router, se ajusta el cableado y se comprueba que el servicio levanta con IP correctamente y ya no aparece en warning\n" +
+    "• Diagnóstico: CPE saturado\n" + 
+    "• Solución: Se deja conexión estable y se comprueba con el cliente que el internet ya funciona correctamente",
+  tecnico:
+    "• Pruebas realizadas: Se revisa en Schaman que el servicio está en warning, se le hace reinicio de fábrica al router, se ajusta el cableado y sigue sin levantar ip, se revisa el cableado esta bien conectado en el puerto correspondiente \n" +
+    "• Diagnóstico: pérdida de conexión por posible saturación\n" +
+    "• Solución: Se envía contrata para revisión y posible cambio de CPE"
+};
+
+const plantillaIncomWarning = estado => baseIncomWarning() + textosIncomWarning[estado];
+
 // =========================
 // MANDO TV
 // =========================
@@ -596,9 +612,9 @@ const plantilla101 = estado => base101() + textos101[estado];
 // TÉCNICO INCUMPLIDO
 // =========================
 
-const baseTecnicoIncumplido = () => encabezado();
+const baseTecnico = () => encabezado();
 
-const textosTecnicoIncumplido = {
+const textosTecnico = {
   esperaCita:
     "• Qué dice el cliente que le sucede: Tengo cita con el técnico\n" +
     "• Pruebas realizadas: Se valida la cita programada en Smart, se verifica la fecha y hora de la cita y se informa al cliente que no ha pasado el tiempo de espera\n" +
@@ -611,8 +627,8 @@ const textosTecnicoIncumplido = {
     "• Solución: Se disculpa con el cliente y se reporta al técnico en base black list"
 };
 
-const plantillaTecnicoIncumplido = estado =>
-  baseTecnicoIncumplido() + textosTecnicoIncumplido[estado];
+const plantillaTecnico = estado =>
+  baseTecnico() + textosTecnico[estado];
 
 // =========================
 // NO ACCESO INTERNET - IMPAGO
@@ -672,6 +688,21 @@ const textosMigracion = {
 };
 
 const plantillaMigracion = estado => basesMigracion() + textosMigracion[estado];
+
+const baseLlamadaOtros = () =>
+  encabezado();
+
+const textosLlamadaOtros = {
+  factura:  
+    "• Qué dice el cliente que le sucede: Mi llamda no es por el internet es por la factura\n" +
+    "• Qué dice el cliente que le sucede: Queires saber precios de la factura\n" +
+    "• Pruebas realizadas: Ninguna, cliente no indica gestión para la fibra solo queir saber sobre su factura\n" +
+    "• Diagnóstico: Llamada sin motivo de fallos en la fibra\n" +
+    "• Solución: Se revisa desde impersonar y se le explica, igualmente se le indica al cliente que para temas de facturación debe llamar a servicio al cliente, se pasa a servicio al cliente para que le den la información que requiere sobre su factura"
+};    
+
+const plantillaLlamadaOtros = estado =>
+  baseLlamadaOtros() + textosLlamadaOtros[estado];  
 
 const baseLlamadanovalida = () =>
   encabezado();
@@ -747,13 +778,17 @@ const plantillas = {
     resuelto: () => plantillaIncomIP("resuelto"),
     no: () => plantillaIncomIP("no")
   },
+  incomwarning: {
+    resuelto: () => plantillaIncomIP("resuelto"),
+    tecnico: () => plantillaIncomTotal()
+  },
   error101: {
     informacion: () => plantilla101("informacion"),
     nv2: () => plantilla101("nv2")
   },
-  tecnicoIncumplido: {
-    esperaCita: () => plantillaTecnicoIncumplido("esperaCita"),
-    incumplimiento: () => plantillaTecnicoIncumplido("incumplimiento")
+  tecnico: {
+    esperaCita: () => plantillaTecnico("esperaCita"),
+    incumplimiento: () => plantillaTecnico("incumplimiento")
   },
   noAccesoImpago: {
     impago: () => plantillaNoAccesoImpago()
@@ -877,12 +912,12 @@ const avisosPlantillas = {
     texto: "Se usa cuando sigue sin levantar IP y toca enviar contrata."
   },
 
-  "tecnicoIncumplido.esperaCita": {
+  "tecnico.esperaCita": {
     tipo: "info",
     titulo: "Info",
     texto: "La cita sigue dentro de la franja horaria y todavía no hay incumplimiento."
   },
-  "tecnicoIncumplido.incumplimiento": {
+  "tecnico.incumplimiento": {
     tipo: "warning",
     titulo: "Aviso",
     texto: "Se usa cuando el técnico ya incumplió la visita."
@@ -1244,12 +1279,21 @@ menu.innerHTML = `
         </div>
 
         <div class="subtituloGrupo">
-          Técnico Incumplido
+          Incomunicado Warning
+          <i class="fa-solid fa-chevron-down" style="float:right;"></i> 
+        </div>
+        <div class="subcontenidoGrupo">
+          <button data-opt="incomwarning.resuelto" class="btnMenu">Resuelto</button>
+          <button data-opt="incomwarning.tecnico" class="btnMenu">Envío de técnico</button>
+        </div>
+
+        <div class="subtituloGrupo">
+          Técnico
           <i class="fa-solid fa-chevron-down" style="float:right;"></i>
         </div>
         <div class="subcontenidoGrupo">
-          <button data-opt="tecnicoIncumplido.esperaCita" class="btnMenu">Aún en tiempo de cita</button>
-          <button data-opt="tecnicoIncumplido.incumplimiento" class="btnMenu">Técnico incumplió</button>
+          <button data-opt="tecnico.esperaCita" class="btnMenu">Aún en tiempo de cita</button>
+          <button data-opt="tecnico.incumplimiento" class="btnMenu">Técnico incumplió</button>
         </div>
 
         <div class="subtituloGrupo">

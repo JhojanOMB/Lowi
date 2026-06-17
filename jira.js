@@ -354,14 +354,12 @@ javascript:(() => {
 
         /* SUBTIPO */
         let subtipoTexto = "";
-        if (sel.includes("INCOMUNICADO") || sel.includes("PUERTOS LAN")) {
+        if (sel.includes("INCOMUNICADO")) {
           subtipoTexto = "Net Incomunicado - No Conecta";
-        } else if (sel.includes("NO LEVANTA")) {
+        } else if (sel.includes("NO LEVANTA") || sel.includes("PUERTOS LAN")) {
           subtipoTexto = "Net Mala Calidad - Equipo";
-        } else if (sel.includes("LENTITUD") || sel.includes("CORTES")) {
+        } else if (sel.includes("LENTITUD") || sel.includes("CORTES") || sel.includes("NO NAVEGA") || sel.includes("UMBRALES")) {
           subtipoTexto = "Net Mala Calidad - Lentitud o Cortes";
-        } else if (sel.includes("NO NAVEGA") || sel.includes("UMBRALES")) {
-          subtipoTexto = "Net No Navega - Ciertas páginas";
         } else if (sel.includes("DESPERFECTO INTERNO")) {
           subtipoTexto = "Desperfectos en casa del cliente - Interior";
         } else if (sel.includes("DESPERFECTO EXTERNO")) {

@@ -694,11 +694,16 @@ const baseLlamadaOtros = () =>
 
 const textosLlamadaOtros = {
   factura:  
-    "• Qué dice el cliente que le sucede: Mi llamda no es por el internet es por la factura\n" +
-    "• Qué dice el cliente que le sucede: Queires saber precios de la factura\n" +
-    "• Pruebas realizadas: Ninguna, cliente no indica gestión para la fibra solo queir saber sobre su factura\n" +
+    "• Qué dice el cliente que le sucede: Mi llamada no es por el internet es por la factura\n" +
+    "• Pruebas realizadas: Ninguna, cliente no indica gestión para la fibra solo quiere saber sobre su factura\n" +
     "• Diagnóstico: Llamada sin motivo de fallos en la fibra\n" +
-    "• Solución: Se revisa desde impersonar y se le explica, igualmente se le indica al cliente que para temas de facturación debe llamar a servicio al cliente, se pasa a servicio al cliente para que le den la información que requiere sobre su factura"
+    "• Solución: Se revisa desde impersonar y se le explica, igualmente se le indica al cliente que para temas de facturación debe llamar a servicio al cliente, se pasa a servicio al cliente para que le den la información que requiere sobre su factura",
+  datosMoviles:
+    "• Qué dice el cliente que le sucede: Mi llamada no es por el internet es por los datos móviles de mi movil\n" +
+    "• Pruebas realizadas: Ninguna, cliente no indica gestión para la fibra solo quiere saber sobre sus datos móviles\n" +
+    "• Diagnóstico: Llamada sin motivo de fallos en la fibra\n" +
+    "• Solución: Se le indica al cliente que para temas de datos móviles debe llamar a servicio al cliente, se pasa a servicio al cliente para que le den la información que requiere sobre sus datos móviles"
+  
 };    
 
 const plantillaLlamadaOtros = estado =>

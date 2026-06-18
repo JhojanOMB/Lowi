@@ -247,6 +247,8 @@ javascript:(() => {
       '.atlas-select__control, .css-1et8t39-control, .sr-rs__control, .css-4avucx-control, .css-b4cy4q-control, .css-5a7vsu-container, [class*="-control"]'
     );
 
+    const normaliza = texto => (texto || "").replace(/\s+/g, " ").trim().toLowerCase();
+
     const getSelectionText = () => {
       if (!container) return "";
       const txt = container.textContent || "";
@@ -260,12 +262,20 @@ javascript:(() => {
       return txt.trim();
     };
 
-    if (getSelectionText().toLowerCase() === textoObjetivo.toLowerCase()) {
+    const textoObjetivoNormalizado = normaliza(textoObjetivo);
+    const seleccionado = texto => {
+      const actual = normaliza(texto);
+      return actual === textoObjetivoNormalizado || actual.includes(textoObjetivoNormalizado);
+    };
+
+    if (seleccionado(getSelectionText())) {
       return true;
     }
 
     let intentos = 0;
     while (intentos < 2) {
+      const textoAntes = normaliza(getSelectionText());
+
       input.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
       await wait(300);
 
@@ -278,10 +288,17 @@ javascript:(() => {
       await wait(600);
 
       input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", keyCode: 13, bubbles: true }));
-      await wait(400);
 
-      if (getSelectionText().toLowerCase() === textoObjetivo.toLowerCase()) {
-        return true;
+      for (let i = 0; i < 8; i++) {
+        await wait(250);
+        if (seleccionado(getSelectionText())) {
+          return true;
+        }
+      }
+
+      const textoDespues = normaliza(getSelectionText());
+      if (textoDespues && textoDespues !== textoAntes) {
+        return seleccionado(textoDespues);
       }
 
       intentos++;
@@ -291,7 +308,7 @@ javascript:(() => {
     return false;
   }
 
-  /* ================= MAIN ================= */
+  /* ================= MENÚ ================= */
   (async () => {
     try {
       const averias = [

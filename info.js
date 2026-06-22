@@ -561,7 +561,7 @@
       "• Solución: Se deja emparejamiento del mando con el deco de manera corecta y se comprueba que responde a órdenes",
     mandoNoEmpareja:
       "• Qué dice el cliente que le sucede: El mando no funciona\n" +
-      "• Pruebas realizadas: mando sin luces, no empareja al decodificador\n" +
+      "• Pruebas realizadas: Mando sin luces, no empareja al decodificador\n" +
       "• Diagnóstico: Mando defectuoso\n" +
       "• Solución: Se escala a NV2 para cambio",
     mandoRoto:
@@ -730,7 +730,7 @@
       "• Diagnóstico: Ficha no válida\n" +
       "• Solución: Se tipifica como ficha no válida y se cierra para abrir una nueva con DNI correcto para su gestión",
     noValidaSinDNI: 
-      "• Qué dice el cliente que le sucede: no indica DNI\n" +
+      "• Qué dice el cliente que le sucede: No indica DNI\n" +
       "• Pruebas realizadas: Ninguna, cliente no indica DNI para la gestión\n" +
       "• Diagnóstico: Ficha sin DNI\n" +
       "• Solución: Se tipifica como ficha sin DNI y se cierra llamada ya que no tiene DNI para gestionar el caso, se le indica al cliente que vuelva a llamar con su DNI para poder gestionar su caso"
@@ -792,7 +792,7 @@
     },
     incomwarning: {
       resuelto: () => plantillaIncomIP("resuelto"),
-      tecnico: () => plantillaIncomTotal()
+      tecnico: () => plantillaIncomIP("tecnico")
     },
     error101: {
       informacion: () => plantilla101("informacion"),
